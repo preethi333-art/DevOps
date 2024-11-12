@@ -1,0 +1,134 @@
+KInd is Kubernetes inside docker which is one of the most popular local installation of Kubernetes
+with the help  OF KIND WE CAN CREATE MULTINODE CLUSTER ON SINGLE MACHINE
+kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
+kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
+Each of the docker containers treated aas a sepereate node
+--------------------------------------------------------------------- 
+FOR KIND TOOL WE NEED TO PROVIDE
+a config file as input , in this config file  we specify how many nodes we require
+
+1. create those many containers (ex we specify 3 nodes in congig file, it will create 3  containers)
+
++++++++ to create container we need image kubernetes comminity provided is they need an image and inside that they have all necesarry components
+kubeadm, kubelet docker from these images we are readily creating these containers
+
+as soon as 3 containers created
+1. run kubeadm init in one of the nodes we will get join command and that will also be added by kind utility on other nodes
+------------------------------------------------------------------------                 
+yum install docker -y
+
+===========Kind installation steps============
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.12.0/kind-linux-amd64
+
+chmod +x ./kind
+
+sudo mv ./kind /usr/local/bin/kind
+
+
+==========kubectl installation steps============
+curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+
+
+chmod +x ./kubectl
+
+sudo mv ./kubectl /usr/local/bin/kubectl
+
+
+============configfile====================
+# three node (two workers) cluster config
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+
+============create kind cluster============
+
+kind create cluster --config configfile
+
+If nodes are in NotReady state do below steps
+sudo sysctl net/netfilter/nf_conntrack_max=131072
+kind delete cluster
+kind create cluster --config configfile
+
+                 
+
+
+
+
+=================================================================
+
+STEP1 : install kind binary
+
+# For AMD64 / x86_64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
+# For ARM64
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+
+STEP2: CREATE CLUSTER 
+kind create cluster (DOWNLOAD Latest k8 image version)
+optional flags
+--image: particular vesion image it uses do to relese notes in KIND DOCUMENT
+         copy particular version and paste
+--name: give name of your cluster
+
+kind create cluster --image kindest/node:v1.31.0@sha256:53df588e04085fd41ae12de0c3fe4c72f7013bba32a20e7325357a1ac94ba865 --name cka-cluster-1
+
+STEP3
+install kubectl utility
+go to kubectl install document
+to see kubectl version ----> kubectl version --client
+
+COMMAND TO SEE 
+if multiple clusters are running it show which cluster currently running an d where it is 
+coreDNS
+kubectl cluster-info --context kind-cka-cluster1
+                                   |
+                              name of cluster
+
+kubectl get nodes 
+only one node will be running
+but,
+It doesnot have separate node for control plane or for worker node
+we want to create in a way that your control plane and worker nodes kept separately
+
+NOTE
+when we run kubectl get nodes or any interaction done with the cluster done with the help of kubectl command line 
+it will reach out to apiserver, apiserver does all the validation it would return the results from etcd data base
+when we do 
+kubectl get nodes                        
+go to apisever validate the request, authenticate the request then go to etcd database to fetch the results and return back to the nodes that are running
+
+STEP4 configuring your kind cluster
+see in doc
+1. vi config.yml  paste below
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker\
+2. 
+ kind create cluster --image kindest/node:v1.31.0@sha256:53df588e04085fd41ae12de0c3fe4c72f7013bba32a20e7325357a1ac94ba865 --name cka-cluster-2 --config config.yml
+
+it will create 1 control plane 2 workernods     
+
+kubectl get nodes
+1 control plane 2 workernods     
+
+
+as we created 2 clusters now  cka-cluster-1 and ka-cluster-2
+
+to see which cluster we are in present  
+
+kubectl config get-contexts
+
+cka-cluster-1 
+*Cka-cluster-2
+
+TO SWITCH TO ANOTHER CLUSTER
+kubectl config use-context <cluster-name>
+========================================================================
