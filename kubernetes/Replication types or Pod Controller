@@ -1,0 +1,32 @@
+kubectl explain rc
+kubectl explain rc --recursive // to see in more detail
+
+how to know pod is under controller
+kubectl describe <pod name>
+
+kubectl delete rc <rc-name>
+
+when we run by default we get some random label 
+to delete label
+ex:
+kubectl label pod <pod-name> run-
+assign new label: kubectl label pod <pod-name> team=dev
+
+*** 
+IF YOU WANT ONE POD NOT TO BE MANAGED BY REPLICATION CONTROLLER you can simply unset the lable or change the lable 
+Now RC try to create new pod inorser to maintain desired state
+*** by default if you remove rplication controller it will remove rplication controller along with pods
+but you want to remove only replication controller but not pods then
+kubectl delete rc --cascade=false <rc-name>
+
+
+HOW ROLLING UPGRADE HAPPENSIN CAASE OF REPLICATION CONtROLLER
+===============================================================
+now controller will get created one by one each pod will get deleted in old RC 
+once all new pods got created in new RC, the connection re-established again to new RC with some down time
+
+
+
+
+
+
