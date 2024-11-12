@@ -24,7 +24,7 @@ HOW ROLLING UPGRADE HAPPENSIN CAASE OF REPLICATION CONtROLLER
 ===============================================================
 now controller will get created one by one each pod will get deleted in old RC 
 once all new pods got created in new RC, the connection re-established again to new RC with some down time
-!Screenshot
+![images alt](https://github.com/preethi333-art/Screenshots/blob/main/Screenshot%202024-11-11%20144403.png?raw=true)
 
 
 
