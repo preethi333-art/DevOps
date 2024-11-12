@@ -20,12 +20,21 @@ but you want to remove only replication controller but not pods then
 kubectl delete rc --cascade=false <rc-name>
 
 
-HOW ROLLING UPGRADE HAPPENSIN CAASE OF REPLICATION CONtROLLER
+HOW ROLLING UPGRADE HAPPENS IN CASE OF REPLICATION CONtROLLER
 ===============================================================
+
+V1.18 --> kubernetes has removed the rolling update feature in ReplicationController
+change in yml the upgraded version and run below command 
+kubetcl rolling-update rc-demo --update-period=10s -f rc.yaml // this rolling-update command removed
+
 now controller will get created one by one each pod will get deleted in old RC 
 once all new pods got created in new RC, the connection re-established again to new RC with some down time
-![images alt](https://github.com/preethi333-art/Screenshots/blob/main/Screenshot%202024-11-11%20144403.png?raw=true)
+this is the disadvantage in RC CONTROLLER 
 
+refer Screenshot 2024-11-12 160218.png
+=========================================
+Today actually i tried this RC file. First i increased the replica to 4, as usual a new pods created.
+I reconfigured again to 3, now wat happened was... the last pod which has the low time age was first to be terminated ( This is what i observed) Later i decreased  the replica further to 2, again the  the one which has the low time terminated...
 
 
 
