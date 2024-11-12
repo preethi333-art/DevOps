@@ -1,5 +1,47 @@
-kubectl explain rc
+REPLICATION CONTROLLER
+
+kubectl explain rc // The kubectl explain command provides documentation and details about Kubernetes resources directly in the terminal.
+When you run kubectl explain rc, it displays information about the ReplicationController resource, including its fields and structure. Here's an overview of how it works
+====================================================
+
 kubectl explain rc --recursive // to see in more detail
+==================================================
+Here's an example of a simple ReplicationController YAML file, rc.yml. This configuration will manage a specified number of replicas of a pod running a container.
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: rc-demo
+  labels:
+    app: demo-app          #  Here, the app: demo-app label is assigned to the ReplicationController resource named rc-demo. Labels for the ReplicationController itself
+spec:
+  replicas: 3                   # Number of pod replicas to maintain
+  selector:                      # Selector to find matching pods
+    app: demo-app
+  template:
+    metadata:
+      labels:                    # Labels applied to the pods created/Labels for the pods created by this ReplicationController
+        app: demo-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:1.21        # Container image version
+        ports:
+        - containerPort: 80      # Port exposed by the container
+
+===================================================================================================================================================
+apiVersion: Defines the API version (v1 for ReplicationController).
+kind: Specifies the resource type, which is ReplicationController.
+metadata: Contains metadata for the replication controller, including its name (rc-demo) and a label (app: demo-app).
+spec: Defines the desired state of the ReplicationController:
+replicas: Specifies the desired number of pod replicas (3 in this case).
+selector: Matches pods with the label app: demo-app, allowing the ReplicationController to identify the pods it manages.
+This configuration ensures that the ReplicationController will manage only the pods labeled with app: demo-app.
+template: Contains the pod template definition, which describes the pod's configuration, including:
+containers: Defines the container(s) within each pod.
+name: The container's name (nginx-container).
+image: The container image (nginx:1.21).
+ports: Exposes port 80 on the container.
+==================================================================================================================================
 
 how to know pod is under controller
 kubectl describe <pod name>
@@ -22,12 +64,32 @@ kubectl delete rc --cascade=false <rc-name>
 
 HOW ROLLING UPGRADE HAPPENS IN CASE OF REPLICATION CONtROLLER
 ===============================================================
-
-V1.18 --> kubernetes has removed the rolling update feature in ReplicationController
+Starting with Kubernetes v1.18, the rolling-update command for ReplicationController has been removed.
+Kubernetes now recommends using Deployments instead of ReplicationControllers for managing rolling updates,
+as Deployments provide more advanced and stable features, such as zero-downtime updates and rollback capabilities.
+In Kubernetes v1.18 and beyond, managing updates using ReplicationController is no longer recommended because of limitations like the inability to perform
+a rolling update, which can cause issues such as downtime and inconsistencies between pod images. 
+The challenges you're seeing, including ImagePullBackOff and ErrImagePull, are likely due to an image mismatch or configuration conflict
+in the ReplicationController that prevents it from fully reconciling with the new version.
+/**V1.18 --> kubernetes has removed the rolling update feature in ReplicationController
 change in yml the upgraded version and run below command 
 kubetcl rolling-update rc-demo --update-period=10s -f rc.yaml // this rolling-update command removed
 
-now controller will get created one by one each pod will get deleted in old RC 
+however, update the version of image in .yml to what ever version you want then re-apply it changes to updated version this works but with downtime,
+and if we describe rc shows updated version 
+and if we describe pod we see older version only if we try to delete pod RC cant recreaate so this wont work
+[root@ip-172-31-95-169 ~]# kubectl get pods
+NAME            READY   STATUS             RESTARTS      AGE
+rc-demo-2749t   0/1     ImagePullBackOff   0             83s
+rc-demo-kzkkt   1/1     Running            1 (29m ago)   10h
+rc-demo-wvz76   1/1     Running            1 (29m ago)   10h
+[root@ip-172-31-95-169 ~]# kubectl get pods
+NAME            READY   STATUS         RESTARTS      AGE
+rc-demo-2749t   0/1     ErrImagePull   0             104s
+rc-demo-kzkkt   1/1     Running        1 (29m ago)   10h
+rc-demo-wvz76   1/1     Running        1 (29m ago)   10h  **/
+
+new controller will get created one by one each pod will get deleted in old RC 
 once all new pods got created in new RC, the connection re-established again to new RC with some down time
 this is the disadvantage in RC CONTROLLER 
 
