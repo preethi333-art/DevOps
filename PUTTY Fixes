@@ -1,0 +1,3 @@
+If we lost our PPK file, again we create ppk file using pem and  login it throws error like "NO SUPPORTED AUTHENTICATION AVAILABLE"
+Before loadong ppk from pem through PUTTY GEN
+goto Key---> parameters for saving key files---> ppk file version choose 2---> OK ----> load
