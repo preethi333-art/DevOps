@@ -94,7 +94,7 @@ it will not remove old RS but set to 0 so in future we want we can roll back
 
 COMMANDS
 ========
-case1:
+case1:  without --record=true
 **kubectl apply -f deployment.yml
 **kubectl rollout history deployment nginx-deployment
 O/P
@@ -103,12 +103,53 @@ deployment.apps/nginx-deployment
 REVISION  CHANGE-CAUSE
 1          <none>
 
-CASE2
+CASE2 :    with --record=true
 =====
 **kubectl apply -f deployment.yml --record=true
 deployment.apps/nginx-deployment
 REVISION  CHANGE-CAUSE
 1         kubectl apply -f deployment.yml --record=true
+
+kubectl explain rc 
+kubectl explain rc --recursive 
+
+Get Resources
+kubectl get rc, pods
+
+Describe Resource Controller
+kubectl describe rc <rc-name>
+
+Delete Resource Controller
+kubectl delete -f rc.yml
+kubectl delete rc <rc-name>
+
+Delete Pod
+kubectl delete pod <pod-name>
+
+Setting Labels
+kubectl label pod <podname> team=dev
+
+Unsetting Labels
+kubectl label pod <podname> key-
+
+Remove RC but Not Pod
+kubectl delete rc --cascade=false rc-demo
+
+Rollout Commands
+kubectl rollout history <name-of-deployment>
+kubectl rollout history <name-of-deployment> --revision=1
+kubectl rollout undo <name-of-deployment> --to-revision=1
+
+Pause and Resume Rolling Update
+kubectl rollout pause <name-of-deployment>
+kubectl rollout resume <name-of-deployment>
+
+Scaling
+kubectl scale deployment <name-of-deployment> --replicas=10
+# Or edit the deployment file to change replicas
+
+
+
 
 
 
