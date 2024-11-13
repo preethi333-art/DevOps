@@ -12,7 +12,6 @@ spec:
         operator: In
         values:
           - dev
-          - prod
           - test
       - key: team
         operator: NotIn
@@ -29,3 +28,21 @@ spec:
         image: nginx:1.21
         ports:
         - containerPort: 80
+
+
+use case 1
+I have pods 
+pod1 has labels: nginx and team: dev
+pod2 has labels: nginx and team: prod
+pod3 has labels: nginx and team: test
+pod4 has labels: nginx and team: stage
+pod5 has labels: team: dev and uses a busybox image (without the nginx label)
+When you create a ReplicaSet with a selector matching the nginx label and a team: dev pod template, it identifies pod1 (as it matches both nginx and team: dev) 
+and takes control of it. Then, to meet the desired replica count, it creates two additional replicas based on the nginx and team: dev template, 
+so you end up with three replicas of nginx pods for the team: dev so prod test wont be controlled by rs
+
+use case 2
+no pods running 
+created replicaset then it creates all 3, based on template we give 
+when we try to create maually one more pod with team: dev and image busy box it wont create since it already has desired state
+
