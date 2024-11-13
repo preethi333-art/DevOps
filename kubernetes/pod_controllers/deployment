@@ -4,7 +4,8 @@
 -> we can achive the auto-scalling by deployment
 -> Deployment is used to tell kubernets how to create and or modify the instaces of pods
 
-deployment.yml creates Replicaset it uses this replica set on top of RS deployment is created and under RS all pods got created
+deployment.yml creates Replicaset, it uses this replica set in order to ensures that the desired state on top of RS, 
+deployment is created and under RS all pods got created
 DEPLOYMENT---> REPLICASET --> POD
 
 
@@ -75,5 +76,42 @@ The Deployment flow ensures that:
 This flow makes managing and deploying applications in Kubernetes efficient and resilient.
 
 ===========================================================================================================================================================
+Rollling update in deployment
+                   Deployment
+                       |
+                       |
+            -----------------------
+           |                       |
+    Old Replica Set (RC)       New Replica Set (RC)
+           |                       |
+    --------------          --------------
+   |              |        |              |
+ Pod1   Pod2  Pod3    Pod1 (New Pod)
+
+create new replica ---> add end point of new replica to deployment so traffic redirected to both , It incrementally creates new pods while terminating old ones
+This process continues until all old pods are replaced by new pods in the new replica set.
+it will not remove old RS but set to 0 so in future we want we can roll back
+
+COMMANDS
+========
+case1:
+**kubectl apply -f deployment.yml
+**kubectl rollout history deployment nginx-deployment
+O/P
+===
+deployment.apps/nginx-deployment
+REVISION  CHANGE-CAUSE
+1          <none>
+
+CASE2
+=====
+**kubectl apply -f deployment.yml --record=true
+deployment.apps/nginx-deployment
+REVISION  CHANGE-CAUSE
+1         kubectl apply -f deployment.yml --record=true
+
+
+
+
 
 
