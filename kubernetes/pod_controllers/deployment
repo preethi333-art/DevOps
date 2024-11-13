@@ -1,0 +1,79 @@
+### Kubernetes Deployment Flow
+
+-> By using deployment we can rollout and rollback our application deployment
+-> we can achive the auto-scalling by deployment
+-> Deployment is used to tell kubernets how to create and or modify the instaces of pods
+
+deployment.yml creates Replicaset it uses this replica set on top of RS deployment is created and under RS all pods got created
+DEPLOYMENT---> REPLICASET --> POD
+
+
+##### deployment take care of rollout and rollback our application deployment
+###### RS ensures that the desired state of application replicas is maintained.
+===============================================================================================
+observe names
+Every 2.0s: kubectl get all
+
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/nginx-deployment-64c9bc5598-5469m          1/1     Running   0          17s
+pod/nginx-deployment-64c9bc5598-bdgbj          1/1     Running   0          17s
+pod/nginx-deployment-64c9bc5598-spzd8          1/1     Running   0          17s
+pod/test                                       1/1     Running   0          13m
+
+NAME                       TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes         ClusterIP   10.96.0.1      <none>        443/TCP    6h17m
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx-deployment        3/3     3            3           17s
+
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-deployment-64c9bc5598        3         3         3       17s
+=========================================================================================================================
+
+Rolling  update methods in Deployment
+1. File method
+2. kubectl set image deployment.apps/nginx-deployment nginx=nginx:1.7.1 --record=true
+//--record=true: This flag records the command in the deployment's rollout history, which is helpful for tracking the changes made to the deployment.
+3.kubectl edit deployment.apps/nginx-deployment
+
+=========================================================================================================================================
+1. **Define the Deployment**:
+   - Write a YAML file specifying the `Deployment` with desired configurations, such as the replica count, container image, labels, and ports.
+
+2. **Apply the Deployment**:
+   - Use `kubectl apply -f deployment.yaml` to create the Deployment in Kubernetes.
+   - Kubernetes reads the desired state and starts the process of matching the cluster to this state.
+
+3. **ReplicaSet Creation**:
+   - The Deployment automatically creates a **ReplicaSet** to manage the specified number of pods.
+   - The ReplicaSet ensures that the correct number of pods with the correct configurations are running.
+
+4. **Pod Creation**:
+   - The ReplicaSet creates pods based on the defined template, launching containers with the specified image and configurations.
+   - If any pod fails or is deleted, the ReplicaSet automatically replaces it to maintain the desired replica count.
+
+5. **Rolling Update** (if updating an existing Deployment):
+   - When the Deployment's template is modified (e.g., updating the container image), Kubernetes initiates a **rolling update**.
+   - New pods with the updated configuration are gradually rolled out, while old pods are terminated, ensuring minimal downtime.
+
+6. **Self-Healing and Scaling**:
+   - If a pod crashes, the ReplicaSet replaces it to maintain availability.
+   - You can scale the Deployment up or down by adjusting the `replicas` field; Kubernetes will add or remove pods accordingly.
+
+7. **Monitoring and Rollback**:
+   - Use `kubectl get deployments` or `kubectl describe deployment <name>` to monitor the Deployment status.
+   - If an update fails, you can roll back to a previous Deployment version with `kubectl rollout undo deployment/<name>`.
+
+### Summary
+
+The Deployment flow ensures that:
+- The desired number of replicas are running.
+- Rolling updates happen smoothly.
+- Self-healing and scaling are automatic.
+- Rollbacks are quick in case of issues. 
+
+This flow makes managing and deploying applications in Kubernetes efficient and resilient.
+
+===========================================================================================================================================================
+
+
