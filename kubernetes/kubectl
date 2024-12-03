@@ -90,4 +90,29 @@ DECLARATIVE METHOD
 ------------------
 
 we create object by specifying desire state in the spec file Basically we create .yml file and we apply that yml
-when we apply it will create the object for that or else it will create the object what ever desire stte you want 
+when we apply it will create the object for that or else it will create the object what ever desire state you want 
+
+As soon as you run kubectl command basically you are actually using some kind of rest api call over the http and https 
+
+api servet receives the restapi call and it does some kind of authentication and validation here 
+whether he is actual user or not, he has authorization or not 
+once all those authorization, authentication , validation is donr then the data will be return to the etcd database
+* now basically this etcd what ever data returned finally it will try to retrive uit and send responses to the apiserver and finally
+apiserver send bacl to the terminal.
+IN API SERVER MAINLY WE HAVE 3
+AUTHENTICATION
+AUTHORIZATION
+CONTROLLER
+
+     when we run kubectl get pods controller wont come in to picture only if you are updating the object or modifying then controller 
+will come in to the picture
+
+kubectl config view  this will tell the user currently executing all the commands the user is k*s ADMIN here 
+for more info go to---> .kube 
+                         ls
+                         cd config
+this config file have all the info certifies who is the user, what kind of client
+
+## whenever you execute command you have to check who is actually executing
+this user data is already mentioned in this config file it means he is vailid user and allow him to execute
+so whenever you do RESTAPI call here through command line it is doing authentication
