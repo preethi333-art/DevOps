@@ -1,0 +1,17 @@
+
+
+kubectl is a commandline utiliry to interact or perform various operationds on k8s
+kubectl has 2 ways of managing the cluster 
+1. imperative method
+2. Declarative method
+IMPERATIVE METHOD
+--------------------
+we  create pod by executing commands or kubectl commands
+kubectl get pods
+kubectl apply -f hello.yml
+
+DECLARATIVE METHOD
+------------------
+
+we create object by specifying desire state in the spec file Basically we create .yml file and we apply that yml
+when we apply it will create the object for that or else it will create the object what ever desire stte you want 
