@@ -1,0 +1,68 @@
+**Nothing but it is the smallest deployable unit in Kubernetes.**  
+*Inside it, we have containers running, and inside containers, we have images, which are nothing but application images.*  
+Whenever we want to deploy an application into the Kubernetes system, we can deploy it with the help of a pod.  
+All the Kubernetes resources like storage or network are shared between containers. Suppose multiple containers want to access storage or NFS or network, they can equally access these resources.  
+
+**In Docker:**  
+A container gets an IP address.  
+
+**In Kubernetes:**  
+In a pod, containers are not assigned IP addresses; only the pod gets a unique IP address.  
+
+**Kube-proxy will assign an IP address for pods.**  
+**Who creates a pod? Controller.**  
+
+---
+
+**Necessity of a Pod: Why do we need it?**  
+If there is no pod in Kubernetes and we know only Docker:  
+- Assume we have WordPress in one container and MySQL in another container.  
+- If the DB gets killed, WordPress will lose the connection.  
+- Kubernetes will not recreate the DB server. If Docker Swarm recreates the container, a new IP is assigned, and again we need to bind it to the WordPress container manually—there is no automation.  
+
+---
+
+**In Kubernetes:**  
+If we don’t have a pod, Kubernetes will not recreate it automatically; the administrator has to manually recreate it.  
+When Kubernetes creates a pod, it creates containers. Before creating the actual container, it always creates a **pause container**.  
+After the pause container is created, it is added to the namespace. The pause container binds the namespace and runs under it.  
+
+Kubernetes assigns an IP address to the pod, and the pause container binds this IP address. All containers in the pod access it with the help of the pause container.  
+
+**Example:**  
+When you run `kubectl run --name web1 --image=wordpress`:  
+1. A pod is created.  
+2. Inside the pod, a **pause container** is created.  
+3. Before it runs, a namespace is created.  
+4. When the pause container is running, the container with the WordPress image is created and runs there.  
+5. The entire pod is assigned an IP address.  
+
+---
+
+**When a container goes down:**  
+The pod will recreate it, and the IP will remain the same.  
+
+**In Docker:**  
+When the MySQL DB goes down, it will be recreated using Docker Swarm. While recreating, it will be assigned a new IP, and again we need to bind that IP, which is not a good practice.  
+
+---
+
+**If the pod itself goes down:**  
+Till now, we maintained redundancy of the pod itself. If the pod gets killed, it has to be recreated.  
+
+---
+
+**Deployment:**  
+If the pod itself goes down, with the help of a deployment, we can recreate it. A deployment will create a new pod with a new IP, and again we need to manually bind the IP address. To avoid this, we have services.  
+
+---
+
+**Services:**  
+Services run on top of deployments.  
+
+**Three types:**  
+1. ClusterIP  
+2. NodePort  
+3. LoadBalancer  
+
+--- 
