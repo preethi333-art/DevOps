@@ -1,3 +1,79 @@
+Kubernetes Objects:
+Kubernetes objects are persistent entities of your kubernetes system,entites is nothing but it represent your state of the cluster
+
+kubernetes object is "record of intent", once you create object,kubernetes will make sure the object exists.
+
+Every Kubernetes object has a specification (spec) and it has object status,
+The specification is all about what we want and it is regarded as desired state and the stauts is nothing
+but the actual state of kubernetes
+
+Every Kubernetes has a spec and the status
+
+we specify object spec in the format of .yaml file (manifest file) and we the status of the kubernets object after we apply the spec
+
+
+kubectl ---> API Server
+
+kubectl ---> API server
+file format ---> API Server
+
+Kubernetes provides a lot of resources,,, kubectl api-resources --List of all the resources
+
+
+Kubernetes API:
+The core of the kubernetes control plane is the API server,this API -server exposes http API's that lets
+enduser and different parts of your cluster ,external componetns communicate each others
+
+
+kubernetes stores the serialized states of the objects by writing them to the etcd database
+
+
+To express the desired state ,we would be creating the specification of the kubernetes resources
+* pod
+*container
+*ephermel containers
+* Replication Controllers
+* Replica sets
+* Deployments
+* statefuset
+* Daemon sets
+* Job
+* CronJob
+* Horizontal pod Auto scaler
+
+API groups and Versioning :
+
+Kubernetes supports mulitple apiVersion ( Core Apiversion)
+API groups make it easier to extend the kubernetes api.The API group is specified in the REST path and is in the form 
+__apiVersion__ field of serialzied objects
+
+There are several apigroups:
+
+Core api group,Rest path /api/v1---> v1
+
+Named groupd --> /api/$GROUP_NAME/$version
+
+/api/batch/v1 ---> batch/v1
+
+#### Kubectl
+
+Kubectl is command line utlity for interacting and performing various operation on Kubernetes
+
+Kubectl has 2 ways of managing the cluster
+1. Imperative method--> we create object by executing the command,or kubectl commands
+kubectl get pods
+kubectl get nodes
+kubectl apply -f hello-pod.yaml
+
+2.Declartive method
+.yaml ,apply ,delete
+
+How kubectl communicates with kuberentes:
+
+The API Servers manages communication in kubernetes ( for the developer it look like it a API gateway)
+
+To achieve the communication,the API server implement RESTFULL API over http and https to perform
+CRUD operations to populate and modify k8s API objects (pods,service,deployments)
 
 
 kubectl is a commandline utiliry to interact or perform various operationds on k8s
