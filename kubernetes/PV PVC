@@ -16,7 +16,7 @@ because of accessMode and volumes
  3) RWX -> Read write access for mulitple nodes
 
 -> In persistence volume claim we have different policies
- 1) Retain -> If we delete pvc associated PV volume will retain
+ 1) Retain -> If we delete pvc associated PV volume will retain data will be there, not available for new PVC
  2) Delete -> If we delete pvc associated PV volume will delete
  3) Recycle -> Recycle policy is deprecated no longer recommanded for use
 
