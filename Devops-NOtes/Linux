@@ -104,6 +104,13 @@ after understand the binary language it will return back the result to shell. sh
 -> cp -R dirname destinationname  --> To copy the dir from one place to another place
 -> mv oldname newname  --> To change the file name (or) To move the files from one place to another place
 -> mkdir dirname  --> To create the dir
+
+#find /-perm 600 It will displays the flies and directories which have the 600 permissions.-perm option is used to find files based upon permissions.
+#find . -name Java" xargs grep "FTPReadXML": It will displays java files which have the FTPReadXML word in those files.
+#find . -name java" -exec chmod 700; It will set the access permissions (700) for all java files. The argument ( inserts each found file into the chmod command line. The argument indicates the exec command line has ended.
+#find . size+1000c -exec ls -l {} \; It will display the flies which size greater than 1000bytes
+#find logemmin 30-exec im - will remove the logs which are created more than 30 minutes back in logs directory.
+#find names awk '{print $7$11 sot -rn | head-n-10: Find ten largest files in the current directory and recursion through all subdirectories
 -> find / -name filename    --> To search files
 -> find / -inum enterinode number  --> To search files based on inode number
 -> find / -type l   --> To search file based on type ex link(l) block(b) character(c) normal(-)
