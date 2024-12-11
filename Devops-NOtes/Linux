@@ -471,4 +471,118 @@ Library files in Linux are SO (shared object) files
 
 
 
+Here are examples of how to configure ACLs in Linux for files and directories:
+
+1. Viewing Existing ACLs
+To see the current ACLs of a file or directory:
+
+bash
+Copy code
+getfacl <filename>
+Example:
+
+bash
+Copy code
+getfacl myfile.txt
+Output:
+
+arduino
+Copy code
+# file: myfile.txt
+# owner: user1
+# group: group1
+user::rw-
+group::r--
+other::r--
+2. Setting an ACL
+To grant specific permissions to a user or group, use the setfacl command.
+
+Grant Read and Write Access to a User
+bash
+Copy code
+setfacl -m u:username:rw <filename>
+Example:
+
+bash
+Copy code
+setfacl -m u:john:rw myfile.txt
+Grant Execute Permission to a Group
+bash
+Copy code
+setfacl -m g:groupname:x <filename>
+Example:
+
+bash
+Copy code
+setfacl -m g:devteam:x myfile.txt
+3. Setting Default ACLs
+Default ACLs automatically apply to new files and directories created within a directory.
+
+Set Default ACL for a Directory
+bash
+Copy code
+setfacl -m d:u:username:rw <directory>
+Example:
+
+bash
+Copy code
+setfacl -m d:u:john:rw /shared_directory
+4. Removing an ACL
+To remove a specific ACL entry:
+
+bash
+Copy code
+setfacl -x u:username <filename>
+Example:
+
+bash
+Copy code
+setfacl -x u:john myfile.txt
+To remove all ACLs from a file:
+
+bash
+Copy code
+setfacl -b <filename>
+Example:
+
+bash
+Copy code
+setfacl -b myfile.txt
+5. Example Scenario
+Requirement:
+
+A file named project.txt should:
+Allow the owner full access (rw-).
+Allow a user named alice read-only access (r--).
+Allow a group named devs read and write access (rw-).
+Restrict all others (---).
+Commands:
+
+bash
+Copy code
+# Set permissions for the owner
+chmod 600 project.txt
+
+# Add read-only access for alice
+setfacl -m u:alice:r project.txt
+
+# Add read-write access for the devs group
+setfacl -m g:devs:rw project.txt
+
+# Verify the ACL
+getfacl project.txt
+Output:
+
+makefile
+Copy code
+# file: project.txt
+# owner: user1
+# group: group1
+user::rw-
+user:alice:r--
+group::---
+group:devs:rw-
+mask::rw-
+other::---
+
    
