@@ -1,15 +1,27 @@
 WHY INGRESS?
-NODEPORT drawback
+we can expose or appl to external world in diff ways
+one of the option to expose our application to the outside of the cluster is Nodeport services
+-->NODEPORT drawback
 PORTS MUST BE BETWEEN 30000-32767
  NODE IP may change on restarting the node and its not secure to open ports on nodes
-LOADBALANCER
-1.LB depend on cloudProvider, it asks cloudProvider to create LOADBALANCER(which is in public private cloud) in your cloud
+-->LOADBALANCER
+1.closely tied to cloud provider
+LB depend on cloudProvider, it asks cloudProvider to create LOADBALANCER(which is in public private cloud) in your cloud
 assume you are running K8s cluster in cloud which is not supported by Cloud Controller Manager
 2. costly approch
 for 10 applicarions if you are creating service of type LB aws charge each LB
 3. security
+Ingress nothing but incoming traffic to k8 cluster
+1.INGRESS --> we wrire ingress resource in yml file
+2 INGRESS CONTROLLER-- > reads that ingress resource
+   this ingress controller watch for in gress resource and according to the
+   configuration in yml a load balancer is configured
+3. LOAD BALANCER
 
+In deployment we should give label and the same label as selector in the service then only service identify that deployment
 
+so ingress came in to picture
+===============================================================================
 # What is ingress
 -> Ingress is an API object that provides external access to service within cluster.
 -> It acts as a layer 7 (application layer) load balancer, allowing external traffic to be routed to different services based on HTTP/HTTPS routes and rules
@@ -76,8 +88,15 @@ any user to access we cant give because that is a Big URL
 -> when create the multiple service can we give multiple urls to the user to access no
 -> can we give our cluster services direct access to user no so that we will use clusterIp type service to create the pods
 -> When we the clusterip then we cant access the pods from outside so that we will use Ingress
+why this?  ingressClassName: nginx   
+In k8 cluster we have multiple name space one team might require nginx ingress controller
+what if both perform ingress logic we might face some issues
+so k8s community introduces ingressClassName
+The ingressClassName specifies which Ingress controller should handle the request.
 
 
+
+  ingressClassName: nginx   
 # We can deploy the ingress application in three ways
 -> path-Based Routing
 
@@ -90,7 +109,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx   
   rules:
   - http:
       paths:
@@ -255,6 +274,7 @@ spec:
 -> kubectl get ingress     --> To see the ingress
 -> kubectl get pods -A | grep nginx   --> To search the nginx pods
 -> kubectl edit pods ingress-nginx-controller-7d4db76476-7krq8 -n ingress-nginx      --> To see the ingress class-name
+kubectl logs pods ingress-nginx-controller-7d4db76476-7krq8 -n ingress-nginx  -> to see logs
 
 
 
