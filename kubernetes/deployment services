@@ -1,3 +1,5 @@
+
+POD
 **Nothing but it is the smallest deployable unit in Kubernetes.**  
 *Inside it, we have containers running, and inside containers, we have images, which are nothing but application images.*  
 Whenever we want to deploy an application into the Kubernetes system, we can deploy it with the help of a pod.  
