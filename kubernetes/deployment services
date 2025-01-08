@@ -55,7 +55,8 @@ Till now, we maintained redundancy of the pod itself. If the pod gets killed, it
 ---
 
 **Deployment:**  
-If the pod itself goes down, with the help of a deployment, we can recreate it. A deployment will create a new pod with a new IP, and again we need to manually bind the IP address. To avoid this, we have services.  
+If the pod itself goes down, with the help of a deployment, we can recreate it. A deployment will create a new pod with 
+a new IP, and again we need to manually bind the IP address. To avoid this, we have services.  
 
 ---
 
