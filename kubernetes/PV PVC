@@ -1,3 +1,13 @@
+Interviewer: What are the disadvantages of using EBS volume as persistent storage in Kubernetes?
+
+The main reason it is impossible to mount EBS to multiple nodes. As EBS does not support ReadWriteMany. 
+
+So we don't take advantage of distributing a load of an application on several nodes. And also EBS volume is only 
+available in a given Availability Zone.
+
+
+
+
  What is presistence volumes---> cluster level
 -> A PersistentVolume is a piece of storage in the Kubernetes cluster that has been provisioned by an administrator.
 
