@@ -12,6 +12,7 @@ assume you are running K8s cluster in cloud which is not supported by Cloud Cont
 for 10 applicarions if you are creating service of type LB aws charge each LB
 3. security
 Ingress nothing but incoming traffic to k8 cluster
+What are the components required to use Ingress in Kubernetes? Ingress resource, Ingress controller, load balancer
 1.INGRESS --> we wrire ingress resource in yml file
 2 INGRESS CONTROLLER-- > reads that ingress resource
    this ingress controller watch for in gress resource and according to the
@@ -24,7 +25,8 @@ so ingress came in to picture
 ===============================================================================
 # What is ingress
 -> Ingress is an API object that provides external access to service within cluster.
--> It acts as a layer 7 (application layer) load balancer, allowing external traffic to be routed to different services based on HTTP/HTTPS routes and rules
+-> It acts as a layer 7 (application layer) load balancer, allowing external traffic to be routed 
+   to different services based on HTTP/HTTPS routes and rules
 
 Note:-
 
@@ -36,16 +38,20 @@ In AWS, a load balancer can operate at different layers of the OSI model, primar
 Layer 4 Load Balancing (Transport Layer):
 
 Type: Network Load Balancer (NLB).
-Functionality: Distributes incoming traffic based on IP address and TCP/UDP protocol information. It operates at the transport layer, allowing for high performance and low latency.
+Functionality: Distributes incoming traffic based on IP address and TCP/UDP protocol information. 
+It operates at the transport layer, allowing for high performance and low latency.
 Use Cases: Ideal for applications that require extreme performance and can handle millions of requests per second, like real-time gaming and IoT.
 Layer 7 Load Balancing (Application Layer):
 
 Type: Application Load Balancer (ALB).
-Functionality: Distributes traffic based on application-level content, such as HTTP headers, URL paths, or cookies. This allows for more intelligent routing and the ability to handle HTTP/HTTPS traffic.
-Use Cases: Suitable for microservices, HTTP/HTTPS traffic, and applications requiring advanced routing features like host-based or path-based routing.
+Functionality: Distributes traffic based on application-level content, such as HTTP headers, URL paths, or cookies.
+This allows for more intelligent routing and the ability to handle HTTP/HTTPS traffic.
+Use Cases: Suitable for microservices, HTTP/HTTPS traffic, and applications requiring advanced routing features
+like host-based or path-based routing.
 Classic Load Balancer (CLB):
 
-Operates at both Layer 4 and Layer 7, but it's generally considered a legacy option. It’s used for applications that were built within the EC2-Classic network.
+Operates at both Layer 4 and Layer 7, but it's generally considered a legacy option.
+It’s used for applications that were built within the EC2-Classic network.
 Key Features:
 Health Checks: All load balancers support health checks to route traffic only to healthy instances.
 SSL Termination: ALB can manage SSL certificates, offloading the SSL processing from backend servers.
@@ -58,18 +64,22 @@ You said:
 what is main difference between layer 4 and layer 7 in load balancer
 ChatGPT said:
 ChatGPT
-The main differences between Layer 4 and Layer 7 load balancers revolve around the layer of the OSI model at which they operate and how they manage traffic:
+The main differences between Layer 4 and Layer 7 load balancers revolve around the layer of the OSI model 
+at which they operate and how they manage traffic:
 
 Layer 4 Load Balancer
 Layer: Operates at the Transport Layer (Layer 4).
 Traffic Handling: Distributes traffic based on IP address, TCP, and UDP protocol information. It does not inspect the content of the packets.
 Performance: Generally offers higher performance and lower latency since it processes fewer data points.
-Use Cases: Best for applications requiring fast and efficient load balancing, such as real-time applications (gaming, IoT) and high-throughput services.
+Use Cases: Best for applications requiring fast and efficient load balancing, such as real-time applications (gaming, IoT) 
+and high-throughput services.
 Examples: AWS Network Load Balancer (NLB).
 Layer 7 Load Balancer
 Layer: Operates at the Application Layer (Layer 7).
-Traffic Handling: Distributes traffic based on application-level content, such as HTTP headers, URL paths, and cookies. It can make routing decisions based on this data.
-Advanced Features: Supports features like SSL termination, content-based routing, and sticky sessions. It can also provide detailed metrics and logging.
+Traffic Handling: Distributes traffic based on application-level content, such as HTTP headers, URL paths, and cookies.
+It can make routing decisions based on this data.
+Advanced Features: Supports features like SSL termination, content-based routing, and sticky sessions. 
+It can also provide detailed metrics and logging.
 Use Cases: Ideal for web applications, microservices, and services requiring complex routing logic.
 Examples: AWS Application Load Balancer (ALB).
 Summary
@@ -275,10 +285,25 @@ spec:
 -> kubectl get pods -A | grep nginx   --> To search the nginx pods
 -> kubectl edit pods ingress-nginx-controller-7d4db76476-7krq8 -n ingress-nginx      --> To see the ingress class-name
 kubectl logs pods ingress-nginx-controller-7d4db76476-7krq8 -n ingress-nginx  -> to see logs
+===================================================================================================
 
+INGRESS CONTROLLER
+In Kubernetes, an Ingress Controller is a component
+that manages and operates the Ingress resource.
+It is responsible for fulfilling the Ingress rules by
+configuring and managing the underlying load
+balancer or reverse proxy that handles the incoming
+traffic.
+By using an Ingress Controller, Kubernetes clusters
+can leverage the Ingress resource to manage external
+access to services in a more centralized and flexible
+manner.
+The Ingress Controller abstracts the complexities of
+load balancing and routing, providing a convenient
+interface to define and manage the ingress rules for
+applications running in the cluster.
 
-
-
+====================================================================================================
 # You will follow the below video to deploy the ingress application
 https://youtu.be/kf3UjITS91M?si=E1Oc7t79g2hvidhB
 https://youtu.be/a4Kq6mX4Hr4?si=f3E7EIq41fEXljsd   --> path based routing
