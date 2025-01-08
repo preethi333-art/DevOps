@@ -1,3 +1,15 @@
+WHY INGRESS?
+NODEPORT drawback
+PORTS MUST BE BETWEEN 30000-32767
+ NODE IP may change on restarting the node and its not secure to open ports on nodes
+LOADBALANCER
+1.LB depend on cloudProvider, it asks cloudProvider to create LOADBALANCER(which is in public private cloud) in your cloud
+assume you are running K8s cluster in cloud which is not supported by Cloud Controller Manager
+2. costly approch
+for 10 applicarions if you are creating service of type LB aws charge each LB
+3. security
+
+
 # What is ingress
 -> Ingress is an API object that provides external access to service within cluster.
 -> It acts as a layer 7 (application layer) load balancer, allowing external traffic to be routed to different services based on HTTP/HTTPS routes and rules
