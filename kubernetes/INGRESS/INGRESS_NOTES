@@ -1,0 +1,312 @@
+one of the option to expose our application to the outside of the cluster is Nodeport services
+
+with nodePOrt services we are opening a port and using outside of the cluster
+
+good thing is user can call any node ip in the cluster using that port and the request gets forward to the correct pod
+bad part is   PORTS MUST BE BETWEEN 30000-32767
+              NODE IP may change on restarting the node and its not secure to open ports on nodes
+
+ANOTHER way to expose our application is LOADBALANCER service
+
+BAD part is it only works if you are operating in a cloud hosted env like EKS
+or GKS
+for  bare metal we need to set up the entry point like proxy server and whenever we create a service of type loadbalancer a 
+new load balancer gets created in the cloud please note that we have to pay
+for each load balancer that is created 
+so when we have multiple services it
+will increase the cost and difficult to manage all these load balancers let's
+say we have two applications running 
+
+
+say we have two applications running one is a simple to do application developed with react.js and the other one is to do
+api built with springboard when we
+expose these two applications with the
+load balancer service type two load balancers are created in the
+cloud and we need to pay for these two load balancers
+
+so what if there is a way if you have
+only one load balancer for all the
+requests and route it to different
+services based on the host or path
+that's where ingress comes into the
+picture in ingress we declare which
+request should go to which service so we
+write an ingress rule that declares how
+you would like users to be routed to a
+service
+------------------------------------------------------------------
+apiVersion: networking.k8s.10/v1
+kind: Ingress
+metadata:
+name: todo-ingress-path-based
+annotations:
+nginx.ingress. kubernetes. io/rewrite-target: /$1
+spec:
+rules:
+- host: todo.com
+http:
+paths:
+- path: /?( .* ) -
+pathType: Prefix
+backend:
+service:
+name: todo-ui-service
+port:
+number: 3001
+- path: /ap1/?( .* )
+pathType: Prefix
+backend:
+service:
+name: todo-api-service
+port:
+number: 8080
+
+-------------------------------------------------------------------
+
+
+
+                         +----------------+
+                |   Load Balancer |
+                +----------------+
+                       |
+                       | (1)
+                       v
+          +--------------------------------+
+          |    Kubernetes Cluster          |
+          |                                |
+          |  +------------------------+    |
+          |  |   Ingress Controller   |    |
+          |  +------------------------+    |
+          |     |                  |        |
+          |     | (2)              | (2)    |
+          |     v                  v        |
+          | +------------------+  +-------------------+ |
+          | | todo-ui-service  |  | todo-api-service  | |
+          | | 10.244.1.5:3001  |  | 10.244.1.5:8080   | |
+          | +------------------+  +-------------------+ |
+          |         |                    |             |
+          |         | (6)                | (6)         |
+          |         v                    v             |
+          |  +----------------+     +------------------+ |
+          |  |  Pod: React UI  |     | Pod: Spring Boot | |
+          |  |  Deployment      |     | Deployment       | |
+          |  +----------------+     +------------------+ |
+          |     |      |                 |      |         |
+          |     | (7)  | (7)             | (7)  | (7)     |
+          |     v      v                 v      v         |
+          |   Pods   Pods               Pods   Pods       |
+          +-----------------------------------------------+
+
+Ingress Controller Steps:
+1. **(1)**: Request from the Load Balancer reaches the Ingress Controller.
+2. **(2)**: Ingress Controller checks the rules defined in the `Ingress` resource.
+3. **(3)**: Based on the path (e.g., `/` or `/api`), the Ingress Controller routes the request to the appropriate service (`todo-ui-service` or `todo-api-service`).
+4. **(4)**: The Ingress Controller forwards the request to the service's specified port (3001 for `todo-ui-service` and 8080 for `todo-api-service`).
+5. **(6)**: The service forwards the request to the appropriate Pod(s).
+6. **(7)**: The Pod processes the request and sends the response back to the client via the same path.
+
+
+In this example we are routing todo.com to do ui service and todo.com api 2 to do api service. We call these mappings as ingress rules but Ingress Controller writing these ingress rules is not enough. There must be some component that reads these rules and process them.
+------------------------------------------------------------------------------------------------------------------------------
+ That component is called ingress controller. Without ingress controller just ingress rules don't do anything on their own.
+==========================================================================================================================
+
+ So to process ingress rules we must deploy an ingress controller into our cluster to watch for these declarations and act upon them. 
+====================================================================================================================================
+So now whenever we make a request ingress controllers inspect 
+
+http request and direct that request to the correct parts based on the ingress rule that we defined. For example, 1. When we access to-do.com it first hits the load balancer
+ 2. Then it goes to the ingress controller pod and reads the ingress rule and decides which service to call. Once it decides the service to call it forwards the request to the service and
+ finally it reaches the desired ports and same thing happens when we call to do dot com api. Now we don't need any node port or load balancer services as ingress controller is a pod and can access cluster ip services so all we need to do is define cluster ip services for our applications.
+
+
+there are many 3rd party implemenatations of controllers like 
+HAPROXY, traefik, Istio etc
+
+NGINX controller is maintained by k8s itself
+
+1. deploy nginx controller
+
+after deploying it will automatically creae 1 loadbalancer service --> nodeport--> clusterip
+
+to verify  kubectl get po -n ingress-nginx
+
+
+---------------------------------------------------------------------------
+
+The concept of **path types** in Kubernetes Ingress rules defines how incoming HTTP requests should be matched to the paths specified in the rules. Below is an explanation of the three path types and how they behave:
+
+### Path Types:
+1. **ImplementationSpecific**: 
+   - The behavior of this path type depends entirely on the ingress controller being used (e.g., NGINX, HAProxy). 
+   - It provides flexibility but makes the rule behavior controller-dependent, so the specific matching logic can vary.
+
+2. **Exact**:
+   - The URL must match the specified path exactly, including case sensitivity and no extra trailing slashes.
+   - **Example**: 
+     - Path: `/foo` (Exact)
+     - Requests:
+       - `/foo` → **Matches**
+       - `/bar` → **Does not match**
+       - `/foo/` → **Does not match** (extra trailing slash)
+
+3. **Prefix**:
+   - The path is matched based on a prefix, ignoring trailing slashes and subpaths.
+   - It checks if the request path starts with the specified prefix.
+   - **Example**:
+     - Path: `/aaa/bbb` (Prefix)
+     - Requests:
+       - `/aaa/bbb` → **Matches**
+       - `/aaa/bbb/ccc` → **Matches** (subpath is ignored)
+       - `/aaa/bbbxyz` → **Does not match** (not a valid subpath)
+
+---
+
+### Key Differences:
+- **Exact**: Requires the request path to match the rule exactly. Trailing slashes or additional subpaths will fail.
+- **Prefix**: Matches requests if the rule is a prefix of the URL. Trailing slashes and subpaths are allowed.
+
+### Example:
+If you define a rule with the path `/foo` and path type `Exact`:
+- A request to `/foo` will **match**.
+- A request to `/foo/` or `/foo/bar` will **not match**.
+
+If you define a rule with the path `/foo` and path type `Prefix`:
+- A request to `/foo`, `/foo/`, and `/foo/bar` will **match**.
+
+---
+
+### Practical Use:
+- Use **Exact** when you want strict path matching.
+- Use **Prefix** when you want to allow subpaths or variations in the URL.
+- Use **ImplementationSpecific** only if you understand the ingress controller’s behavior or need specific features.
+
+This distinction is crucial when routing requests to the appropriate services in Kubernetes clusters. It ensures that the correct backend services are selected based on the incoming request's path.
+
+
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  rules:
+  - host: nginx-demo.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service  ---> should match exact application name
+            port:
+              number: 8082
+
+How It Works:
+When a request is sent to nginx-demo.com:
+The Ingress resource checks the rules.
+It matches the root path / (or any sub-paths because of Prefix).
+The request is forwarded to the nginx-service running on port 8082.
+
+==========================================================================================================================
+
+When you deploy the above **Ingress YAML**, here’s what happens step by step, and how the IP address comes into play:
+
+---
+
+### **What Happens After Deployment?**
+
+1. **Ingress Resource Creation:**
+   - The Kubernetes **Ingress Controller** (e.g., NGINX Ingress Controller, Traefik, etc.) watches the cluster for any Ingress resources.
+   - It detects the new `nginx-ingress` resource and updates its routing rules to handle requests for the specified host (`nginx-demo.com`).
+
+2. **Ingress Controller Processes the Rules:**
+   - The Ingress Controller reads the rules defined in the Ingress resource:
+     - Requests to `nginx-demo.com` with the path `/` or any sub-path will be routed to the backend service `nginx-service` on port `8082`.
+
+3. **Load Balancer Assignment:**
+   - If you are using a **cloud provider** (like AWS, GCP, or Azure), the **Ingress Controller** will automatically provision a **Load Balancer**.
+     - This Load Balancer will be assigned an **external IP address** that allows incoming traffic to your cluster.
+
+4. **Ingress Controller Acts as a Reverse Proxy:**
+   - Once the external IP address is available, the Ingress Controller listens for requests on that IP and hostname (`nginx-demo.com`).
+   - It routes the requests to the appropriate Kubernetes **ClusterIP Service** (`nginx-service`), which then forwards the traffic to the correct Pod(s).
+
+---
+
+### **How Does the IP Address Work?**
+
+1. **External IP Address:**
+   - After deployment, you can check the **external IP address** of the Ingress Controller. Use the following command to retrieve the details:
+     ```bash
+     kubectl get ingress
+     ```
+     Example output:
+     ```
+     NAME            CLASS   HOSTS             ADDRESS          PORTS   AGE
+     nginx-ingress   nginx   nginx-demo.com    192.168.1.100    80      2m
+     ```
+
+2. **DNS Configuration:**
+   - The domain name (`nginx-demo.com`) must be mapped to the **external IP address** in DNS.
+   - If you're testing locally, you can add an entry to your system's `/etc/hosts` file:
+     ```
+     192.168.1.100  nginx-demo.com
+     ```
+
+3. **Access the Application:**
+   - Once DNS is configured, you can access the application in a browser or via `curl`:
+     ```
+     http://nginx-demo.com
+     ```
+
+4. **No External IP?**
+   - If the external IP address is not showing, it may be due to:
+     - Your cluster not having an external Load Balancer provisioned.
+     - A missing Ingress Controller deployment.
+     - The Ingress Controller being configured for internal IPs only.
+   - In such cases, you may need to use the NodePort or manually configure a Load Balancer.
+
+---
+
+### **How Traffic is Routed Internally**
+
+1. **Request Flow:**
+   - A request to `nginx-demo.com` (with the correct path) reaches the **Load Balancer** or Ingress Controller’s external IP.
+   - The Ingress Controller processes the request based on the rules defined in the Ingress resource.
+   - The request is routed to the `nginx-service` ClusterIP service in the Kubernetes cluster.
+   - The service forwards the traffic to one of the matching backend Pods.
+
+2. **ClusterIP Service Role:**
+   - The Ingress Controller uses the `ClusterIP` of the backend service (`nginx-service`) to route traffic internally. The `ClusterIP` is an internal virtual IP address that only exists inside the cluster.
+
+---
+
+### **Command Recap to Verify Deployment**
+
+- **Check Ingress Resource:**
+  ```bash
+  kubectl get ingress
+  ```
+
+- **Check Services:**
+  ```bash
+  kubectl get svc
+  ```
+
+- **Check Pods:**
+  ```bash
+  kubectl get pods
+  ```
+
+- **Inspect Logs of the Ingress Controller (e.g., NGINX):**
+  ```bash
+  kubectl logs <ingress-controller-pod-name>
+  ```
+
+--- 
+
+Once deployed and configured correctly, the application will be accessible via the domain name (`nginx-demo.com`).
+
+
