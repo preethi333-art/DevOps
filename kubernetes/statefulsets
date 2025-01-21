@@ -1,0 +1,97 @@
+deployments --> wrapper around pods to handle multiple pods in better way
+            --> maintain desired state of replica(self heling)
+             but dont create new pod with same name as before
+             no naming not sequential start
+            assume 3 desire stare up 3 at a time
+             2 up 1 later one by one -->no way to control order of pod scheduling
+for standard storage we use pv  
+statefulset--> follow particular naming convention and create pods   
+ex sts--> sts-0 sts-1 sts-2
+creating in order sts-0 sts-1 sts-2
+after completely creating sts-0 completely up and running then creates sts-1
+after success then sts-2
+suppose we deploy 3 replica and later 2 replica then it will delete last pod sts-2
+replicaset same as deployment in statefulset
+
+useful
+
+
+it doesn't matter if we add pv/pvc to deployments or not 
+pv and pvc mandatory requirement for statefulsets
+
+if we are running any db postgres/MySQL usually do read write operations more
+we need permanent storage when pod goes down new pod need to 
+
+In statefulset every pod get unique identity 
+               stable storage allowing data to be persisted and retained               across pod restarts and rescheduling
+               order deployment
+
+Headless service(ONLY SEEN IN STATEFULSETS)
+similar we have in deployment LB or nodeport or cluster ip 
+in statefulsets automatically create  service called Headless servive which dont have IP to that service
+each pod we have its own Ip DNS entry
+IN between pod communicate using hostname
+IP allocated at pod level not service
+staefulsets supports both horizontal and vertical scaling  
+
+when we use
+hosting database applications in K8s 
+microservices deployment in K8s
+
+every pod will have volume
+
+we dont see ip called headless service as we dont expose statefulset to outside we are using stateful sets for databases no need nodePort
+every pod get hostname so webapplication pods connect through DNS 
+
+
+
+Deployment
+
+1. Used to deploy Stateless applications
+2. All pods are created parallelly
+3. Pods are deleted randomly
+4. Random name is assigned to all pods
+5. Same PV is used for all pods
+6. Scaling is easy
+
+Statefulset
+
+1. Used to deploy Stateful applications
+2. Pods are created one by one
+3. Pods are deleted in reverse order
+4. Sticky and predictable name is assigned to the pods
+5. Different PVs are used for each pod
+6. Scaling is difficult
+
+
+if we delete pod or scale down persistent volumes are not deleted
+
+----------------------------------------------------------------------------------------------------------
+
+# What is kubernetes Statefulset
+-> StatefulSet is the workload API object used to manage stateful applications.
+->  StatefulSets are particularly useful for applications that require unique network identifiers, stable storage, and ordered deployment and scaling.
+-> When you delete the pod in statefulset then it will delete the whichever pod cretead latestly
+-> If you want to host the database in kubernetes then you will use statefulset
+-> We have to give clusterIP to statefulset because we cant expose our database to everyone
+
+what are the difference between stateful and deployment
+statefulset
+-> When we delete the pod in statefulset then another pod will create on same name
+-> we need persistance volume and persistance volumeclaim to create the statefulset
+Deployment
+-> When we delete the pod in statefulset then another pod will create with another name
+-> Persistance volume and persistance volumeclaim It doesnt mandatory to create the statefulset
+
+Statefulset-Data Replication
+Data Replication: Since each pod in the statefulset has its own pv and pvc, data replication can be handled
+ at the storage level
+How to work with statefulset
+-> You have to execute the service.yml
+-> You have to execute the configmap.yml
+-> You have to execute the secret.yml
+-> You have to execute the persistence,volume.yml
+-> After execute the all above file later you have to execute the statefulset
+
+# To get more details of statefulset you will check it out below link
+https://youtu.be/kRynOqdpWxc?si=Ma4Ihn0MJ-BLp5IV
