@@ -1,0 +1,94 @@
+ Daemonset is similar to replica set    
+# What is Daemon Set
+-> DaemonSet is a Kubernetes feature that lets you run a Kubernetes pod on all cluster nodes that meet certain criteria
+-> We create the daemon set for logs collections,monitoring and storage
+-> we cant use daemon set for reqular pod creation
+-> Scale up and scale down process not applicable in daemon set     
+
+  Here is the transcribed text from the image:
+
+---
+
+**Daemonsets**  
+
+- In Kubernetes, DaemonSets are a type of controller used to ensure that a copy of a specific pod is running on all or some of the nodes in a cluster.  
+- Unlike ReplicaSets or Deployments that maintain a desired number of replicas across the cluster, DaemonSets are designed to run exactly one instance of a pod on each node.  
+- DaemonSets are commonly used to run system services or monitoring agents on each node, ensuring that these essential services are present and active throughout the cluster.  
+
+
+---   
+replica stes deployment statefulsets and deamon sets these all controllers ensure that there pods always running but if we want pod to execute only once for db backups
+
+use cases
+
+db backups --> take backip and delete automatically after taking backup
+log rotation--> ensure our log files donot grow too large
+Data Processing--> like parsing data extracting data and transformation
+=========================================================================================================
+# What is Daemon Set
+-> DaemonSet is a Kubernetes feature that lets you run a Kubernetes pod on all cluster nodes that meet certain criteria
+-> We create the daemon set for logs collections,monitoring and storage
+-> we cant use daemon set for reqular pod creation
+-> Scale up and scale down process not applicable in daemon set
+
+# What is the difference betwenn regular deploymnent and Daemonset
+-> Deployment means:- When we deploy the pod in kubernets pods will run the in nodes based on replica. If new node create in cluster pod wont add in that node.
+-> DaemonSet means:- When we deploy the pod in kubernets pods will run in all the nodes. If new node create in cluster pod will add automatically in that new node.
+-> To understand more about daemonset you will checkout below link
+    https://youtu.be/FGJ5OeFItd4?si=W0OwUnRwKPgGTkFx
+
+-> kubectl get ds   -> To see the daemon sets
+
+Note: when kubernets cluster created kube proxy daemonset is created by default in kube-system namespace
+-> kubectl get ds -A  --> To the daemonset in all namespaces
+-> kubectl get pods -n kubesystem  --> To see the pods in kubesystem
+-> Whenever we delete the daemonsets all pods are deleted
+-> kubectl delete ds <name of daemonset>   -> To delete the daemon set
+-> However if you do not want to delete the pods managed by daemonset you will use below command
+      kubectl delete ds <name of daemonset> --cascade=false
+
+
+# What is kube-proxy
+-> kube proxy act as network proxy
+-> Kube proxy will maintain network rules on pods
+-> The network rules allow the network to communicate your pods from inside and outside of the cluster
+
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      # nodeSelector:
+      #   kubernetes.io/os: linux
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter:latest
+        args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+        ports:
+        - name: metrics
+          containerPort: 9100
+        volumeMounts:
+        - name: procfs
+          mountPath: /host/proc
+          readOnly: true
+        - name: sysfs
+          mountPath: /host/sys
+          readOnly: true
+      volumes:
+      - name: procfs
+        hostPath:
+          path: /proc
+      - name: sysfs
+        hostPath:
+          path: /sys
