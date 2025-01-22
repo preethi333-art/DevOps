@@ -1,0 +1,78 @@
+# How to create Autoscaling
+-> After create ELB
+-> Fisrt you will create AMI image to which instance do you want to do autoscaling
+-> Click on instance, Go to actions, click image and template, click create image 
+-> give image name
+-> enable Noreboot
+-> Clikc Tag image and snapshots together
+-> create image 
+-> After create the AMI image. you will go auto scalling and click create auto scalling
+-> Give name
+-> create launch template
+-> give template name
+-> Click Auto Scaling guidance
+-> Click My AMIS and choose ami image
+-> choose instance type
+-> choose key pair
+-> choose security group whichever you have given in ELB
+-> launch the template
+-> Come to auto scaling and choose that templete 
+-> Next
+-> choose VPC Whichever VPC you have used in ELB
+-> Select all subnets
+-> Next
+-> click Attach to an existing load balancer
+-> Click Choose from your load balancer target groups
+-> Choose target group
+-> Click Turn on Elastic Load Balancing health checks
+-> Next
+-> choose you desired instances
+-> Click Target tracking scaling policy
+-> Next
+-> Next
+-> Next
+-> Create
+
+-> After create the auto scaling. you will go target group and check the health status
+-> After you will go Ec2 instances and click that new instance and copy the IP and paste IP in browser
+-> If you terminated the instance then you will get the new instance
+
+Note: Auto scaling wont apply the target group instances 
+
+https://youtu.be/FZPTL_kNvXc?si=wnI8E-zMUt4NdkX0
+==========================================================================================================================
+Auto scaling-->
+without ELB autoscaling dont work
+
+ex our website hosted in 1 ec2 for 100 users expected
+server--> elasticip --> mapped to domain rakesh.com
+2nd month--> 200 users --> incread to 4 core cpu 8gb RAM
+3nd month--> 300 users --> incread to 8 core cpu 16gb RAM
+4th month--> 150 users
+to solve this we came up with autoscaling
+based on cpu utilization asking    
+
+
+have two types of auto scaling
+1) Horizontal Auto scaling  -> Horizontial Scalling increase the number of instances  with same configuration
+ex serv1 2core cpu
+   serv2 2core cpu
+   serv3 2core cpu               
+2) vertical Auto scaling  -> Vertical Scalling increase the capacity of system (like CPU capacity)    
+ex
+serv1--> 2core remove
+serv2--> 4 core cpu 8  remove 
+serv3--> 8 core cpu 16 gb RAM     
+
+ADV
+no downtime in Horizontal Auto scaling 
+downtime in vertical Auto scaling
+
+AWS ONLY PROVIDE Horizontal Auto scaling -->cloud provoder    
+
+ELB benefits
+1. equally distributes load
+2. it can scale to any capacity
+3. health check every one min it will ping
+
+when new server got created then how our website content shared
