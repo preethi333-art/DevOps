@@ -64,6 +64,27 @@ aws machine learing algorithms automatically identifies when to scale in and sca
 -> If you terminated the instance then you will get the new instance
 
 Note: Auto scaling wont apply the target group instances 
+=============================================================================================================================================
+when new server got created then how our website content shared
+
+1.launch ec2 install software and code
+2.create AMI for ec2 (OS+application code) complete backup AMI will take
+while configuring autoscaling(2 steps)
+1. launch configuration --> which AMI to use 
+ 		        what is the instance type of that AMI while scaling
+2. AutoScaling group
+               i. mention launch configuration name
+	       ii. conditions--->1. min and 2.max Instances
+                                 3. desired instance--> after creating ASG how many you want 
+              
+               iii.based on what condition scalein scale out
+                    CPU -- 0-100 graterthan 70% then launch another or avg of instances
+                   avg cpu less than 40 then remove 3rd server 
+     
+whatever data we have in AMI we have that copy in each server
+
+3. create load balancer and add autoscaling group in target
+
 
 https://youtu.be/FZPTL_kNvXc?si=wnI8E-zMUt4NdkX0
 ==========================================================================================================================
@@ -77,7 +98,7 @@ server--> elasticip --> mapped to domain rakesh.com
 4th month--> 150 users
 to solve this we came up with autoscaling
 based on cpu utilization asking    
-
+==================================================================================================================================
 
 have two types of auto scaling
 1) Horizontal Auto scaling  -> Horizontial Scalling increase the number of instances  with same configuration
