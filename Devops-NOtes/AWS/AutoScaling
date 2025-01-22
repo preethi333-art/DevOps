@@ -16,9 +16,13 @@ Horizontal scaling Divied into three types
 
 # What is Scheduled scalling
 -> It will the schedule the instance when instances will launch
+ex:
+in business hrs(9 to 5pm) -- 5 instances
+(5pm to 9am)--> 2 instance
 
 # What is Predictive scalling
 -> It will apprised wheather add the server or remove server
+aws machine learing algorithms automatically identifies when to scale in and scale out
 
 # How to create Autoscaling
 -> After create ELB
