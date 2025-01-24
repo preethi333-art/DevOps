@@ -186,8 +186,17 @@ Note: Now EC2 Vm-1 will have 2 EBS volumes (root vol + additional vol)
 		$ lsblk
 
 4) Store data (files) into EBS Additional Volume using below commands
-
-		$ sudo mkfs -t ext4 /dev/xvdb
+========================================================================================================
+file -s /dev/xvdf is used to inspect the file system or data type on the specified block device
+               Checks whether the block device is formatted with a file system (e.g., ext4, xfs)
+if output:     /dev/xvdf: Linux rev 1.0 ext4 filesystem data, UUID=XXXXXX...----->  not formatted with filesystem
+                            or
+output: /dev/xvdf: data    --> not formatted need to run --> sudo mkfs -t ext4 /dev/xvdb 
+mkfs: Stands for make file system, a utility used to create a new file system on a device.
+-t ext4: Specifies the TYPE of file system to be created.
+================================================================================================================
+           	$ file -s /dev/xvdf  
+		$ sudo mkfs -t ext4 /dev/xvdb  //Without running this command, the operating system would not be able to mount or use the additional volume because it would not have a file system.
 		$ mkdir dir1
 		$ sudo mount /dev/xvdb dir1
 		$ cd dir1
@@ -209,7 +218,7 @@ Note: Once practice is completed, detach additional volume and delete it to avoi
 
 ==========
 Snapshots
-=========
+==========
 
 => Snapshots are used for volumes backup
 
@@ -373,7 +382,7 @@ Step-3) Add these 2 instances to one "Target Group"
 
 Step-4) Create Load Balancer with Target Group (ALB)
 
-			Schme : Internet Facing
+			Schme : Internet Facing  -- ANYONE can access from outside
 
 Note: ALB runs on HTTP protocol with 80 port number
 
@@ -393,7 +402,16 @@ Microservices => Dividing functionalities into multiple apis
 Note: For microservices application we need multiple target groups
 
 
-##### Microservices Load Balancing : https://www.youtube.com/watch?v=QvEJ8--zneU ####
+
+Monolithic  --> only one target Group( have same application in different servers) 
+TG! --> s1 , s2 
+1. round robin is used to go to which server randmoly
+##### Microservices Load Balancing : https://www.youtube.com/watch?v=QvEJ8--zneU ###
+multiple  target Group 
+TG1-->same Application multiple servers (s1,s2)
+TG2-->same Application multiple servers (s3,s4)
+1. routing based on path   whther to go to TG1 or TG2
+2. round robin internally in target groups to which server 
 
 ==============
 OSI Model
@@ -451,7 +469,7 @@ Ex: For big billon day sale we can't guess traffic
 
 => If requests are increasing then servers should be increased  and if requests are decreasing then less servers should be handling the request
 
-1) Fault Tolerance
+1) Fault Tolerance  --> it will detect if instance is unhealthy and it will replace that
 
 2) Cost Management
 
@@ -487,8 +505,6 @@ Ec2 Instance Types
 3) Memory Optimized
 4) Storage Optimized
 5) Accelerated Computing
-
-
 
 ============
 EC2 Summary
