@@ -538,11 +538,11 @@ Instance Types
 ====================
 Ec2 Instance Types
 ====================
-1) General Purpose 
-2) Compute Optimized
-3) Memory Optimized
-4) Storage Optimized
-5) Accelerated Computing
+1) General Purpose  ---> for general webservers 
+2) Compute Optimized _-->  if you want high configuration speed 
+3) Memory Optimized  -->  if you want speed in RAM 
+4) Storage Optimized  --> if you want to perform lot of read and write operations continuosly
+5) Accelerated Computing --> graphics and calculations continuosly
 
 ============
 EC2 Summary
