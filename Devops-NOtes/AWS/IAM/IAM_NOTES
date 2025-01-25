@@ -1,14 +1,14 @@
 # What is IAM 
 Identity Access Managnment
-I -> Identity -> Identity means Authentication -> Authentication means -> To give login permission
-A -> Access -> Access means Authorization -> Authorization means -> To access the service 
+I -> Identity -> Identity means Authentication -> Authentication means -> To give login permission (Users, Roles)
+A -> Access -> Access means Authorization -> Authorization means -> To access the service (policy)
 M -> Managnment
 
 # We have two types of Identity
 1) IAM User  -> When we create the IAM user It will provide the permenent access key and secreat key and passwrod
 2) IAM Role  -> When we create the IAM Role It will provide the tempory credentials it will expair within one hour 
                   (Hacker cant access your service when we will use IAM Role)
-
+                 if you want to talk between 2 aws account services we use roles 
 -> If you want to access the particualr service you have to attach the IAM Policies
 -> We have two types of Policices
 1) AWS Managed Policies
@@ -202,11 +202,14 @@ Boundary permission means you can allow the set of resources to the user
 What Does "Assume Role" Mean?
 When you "assume a role," you are temporarily adopting the permissions associated with that role. This process involves:
 
-Role Definition: The role is created with a specific set of permissions defined in its policies. For example, a role might have permissions to access certain AWS resources like S3 buckets or DynamoDB tables.
+Role Definition: The role is created with a specific set of permissions defined in its policies. For example,
+a role might have permissions to access certain AWS resources like S3 buckets or DynamoDB tables.
 
-Assume Role Request: The entity requests to assume the role. This involves specifying the role to be assumed and providing any necessary credentials or context. In AWS, this is typically done using the sts:AssumeRole API call.
+Assume Role Request: The entity requests to assume the role. This involves specifying the role to be assumed and 
+providing any necessary credentials or context. In AWS, this is typically done using the sts:AssumeRole API call.
 
-Temporary Credentials: Upon successfully assuming the role, the entity receives temporary security credentials (an access key ID, secret access key, and session token) that are valid for a limited time. These credentials allow the entity to perform actions according to the permissions granted by the role.
+Temporary Credentials: Upon successfully assuming the role, the entity receives temporary security credentials
+(an access key ID, secret access key, and session token) that are valid for a limited time. These credentials allow the entity to perform actions according to the permissions granted by the role.
 
 # What assume policy
 Assume Role: This allows an entity to temporarily take on a set of permissions defined by a role.
@@ -216,7 +219,8 @@ Trust Policy: In the context of IAM roles, this is a specific type of policy tha
 Let's break down these concepts:
 
 Trust Policy
-A trust policy is a JSON document attached to an IAM role that specifies which entities (users, services, or accounts) are allowed to assume that role. It essentially governs who can use the sts:AssumeRole action to gain the permissions defined in the role.
+A trust policy is a JSON document attached to an IAM role that specifies which entities 
+(users, services, or accounts) are allowed to assume that role. It essentially governs who can use the sts:AssumeRole action to gain the permissions defined in the role.
 
 
 Role Policy
