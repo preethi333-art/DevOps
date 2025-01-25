@@ -1,9 +1,17 @@
 ============
 EC2 Service
 ============
+why ec2?
+To get rid of maintainance
+to minimize cost pay as you go
+====================================================================================
 question what is ec2?
-  
 =>1. Elastic Compute Cloud, It is Most demanded service in AWS
+def:EC2 is an Elastic Compute Cloud, where asking AWS to give me virtual machine
+on your cloud platform which is elastic in nature
+=========================================================================
+compute  --> means cpu ram disk  requesting AWS to provide virtual server
+ELASTIC  --> means that can be scale up/down (elastic in nature)
 asking AWS to give Virtual Machine on your cloud platform which is elastic
 in nature                     
 => 2. It is Used to create Virtual Machines in AWS cloud
@@ -17,9 +25,19 @@ EC2 Instance = Computer / Server / VM / Virtual Machine / V Box
 
 			9:30 AM - 9:40 AM : 10 mins usage => 1 hour	
 
-Note: To encourage beginners, AWS provided t2.micro/t3.micro for 1 year free
+Note: To encourage beginners, AWS provided t2.micro/t3Ec2 Instance Types
+====================
+TYPES OF EC2 INSTANCES
+1) General Purpose 
+2) Compute Optimized
+3) Memory Optimized
+4) Storage Optimized
+5) Accelerated Computingmicro for 1 year free
 		(Monthly 750 hours )
+go down see more
 ======================================================================================
+
+
 TO create EC2
  Select AMI  ---> configuration required to launch our machine
 			- Select Instance Type  --> type of machine
@@ -498,6 +516,24 @@ Option-4 : Kubernetes Cluster (EKS)
 =========================================================
 IQ) How to connect with EC2 VM when we lost .pem file ?
 =========================================================
+
+Instance Types
+   |
+   |--- General Purpose:
+   |        A1, T4g, M6g, M5, T3, T3a, M5a, M5n, T2, M4
+   |
+   |--- Compute Optimized:
+   |        C6g, C5n, C5, C4, C5a
+   |
+   |--- Memory Optimized:
+   |        R6g, R5, R5a, R5n, R4, X1e, X1, z1d
+   |
+   |--- Storage Optimized:
+   |        I3, I3en, D2, H1
+   |
+   |--- Accelerated Computing:
+            P3, P2, Inf1, G4, G3, F1
+
 
 ====================
 Ec2 Instance Types
