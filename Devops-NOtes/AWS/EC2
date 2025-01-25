@@ -41,7 +41,7 @@ if you are working with european client they want to keep near to them
 also for less latency
 AZ
 ===
-we have Data centers in REGION multiple places called Availability zones
+we have Data centers in one REGION at multiple placesfor high availability called Availability zones
 =============================================================================
 
 
@@ -87,6 +87,7 @@ Lab Practicals on EC2 VM
 ===========================
 
 1) Create Key Pair (.pem file)
+combination of public key and private key used to login instance
 		- public key (aws will keep it)
 		- private key (we will get it)
 
