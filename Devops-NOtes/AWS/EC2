@@ -28,13 +28,11 @@ EC2 Instance = Computer / Server / VM / Virtual Machine / V Box
 Note: To encourage beginners, AWS provided t2.micro/t3Ec2 Instance Types
 ====================
 TYPES OF EC2 INSTANCES
-1) General Purpose 
-2) Compute Optimized
-3) Memory Optimized
-4) Storage Optimized
-5) Accelerated Computingmicro for 1 year free
-		(Monthly 750 hours )
-go down see more
+1) General Purpose  ---> for general webservers -->  A1, T4g, M6g, M5, T3, T3a, M5a, M5n, T2, M4
+2) Compute Optimized (gaming server, machinelearning)_-->  if you want high configuration speed   C6g, C5n, C5, C4, C5a
+3) Memory Optimized (big data analytics) -->  if you want speed in RAM -->R6g, R5, R5a, R5n, R4, X1e, X1, z1d
+4) Storage Optimized  --> if you want to perform lot of read and write operations continuosly--> I3, I3en, D2, H1
+5) Accelerated Computing --> graphics and calculations continuosly --> P3, P2, Inf1, G4, G3, F1
 ======================================================================================
 
 
@@ -334,150 +332,6 @@ service httpd start
 
 - After machine launch access public ip in browser
 
-=========================
-What is Load Balancer ?
-=========================
-
-=> When we run our application in single server then we have to face below challenges
-
-	1) One server should handle all reqs
-	2) Burden will increase on server
-	3) Response will be delayed for clients
-	4) Server can crash
-	5) Single Point Of Failure
-	6) Business Loss
-
-=> To avoid above problems, we will run our application using Load Balancer.
-
-=> Load Balancer is used to distribute load to multiple servers in round robbin fashion.
-
-=> We have below advantages with Load Balancer
-
-	1) App will run in multiple severs
-
-	2) Load will be distributed
-
-	3) Burden will be reduces on servers
-
-	4) Fast Performance
-
-	5) High Availability
-
-
-=> In AWS we have 4 types of Load Balancers
-
-	1) Application Load Balancer (http & https)
-
-	2) Network Load Balancer
-
-	3) Gateway Load Balancer
-
-	4) Classic Load Balancer
-
-=======================
-Load Balancer Lab Task
-=======================
-
-Step-1) Create EC2 VM-1 with below user data
-
-#! /bin/bash
-sudo su
-yum install httpd -y
-cd /var/www/html
-echo "<html><h1>Life Insurance Server - 1</h1></html>" > index.html
-service httpd start
-
-
-Step-2) Create EC2 VM-2 with below user data
-
-#! /bin/bash
-sudo su
-yum install httpd -y
-cd /var/www/html
-echo "<html><h1>Life Insurance Server - 2</h1></html>" > index.html
-service httpd start
-
-
-Step-3) Add these 2 instances to one "Target Group"
-
-Step-4) Create Load Balancer with Target Group (ALB)
-
-			Schme : Internet Facing  -- ANYONE can access from outside
-
-Note: ALB runs on HTTP protocol with 80 port number
-
-Step-5) Access Load Balancer DNS in browser 
-(it will route the requests to our servers in round robbin fashion)
-
-===============================
-Monolithic Vs Microservices
-===============================
-
-Monolithic => Developing all functionalities in one single application
-
-Note: For monolithic application we need single target group
-
-Microservices => Dividing functionalities into multiple apis
-
-Note: For microservices application we need multiple target groups
-
-
-
-Monolithic  --> only one target Group( have same application in different servers) 
-TG! --> s1 , s2 
-1. round robin is used to go to which server randmoly
-##### Microservices Load Balancing : https://www.youtube.com/watch?v=QvEJ8--zneU ###
-multiple  target Group 
-TG1-->same Application multiple servers (s1,s2)
-TG2-->same Application multiple servers (s3,s4)
-1. routing based on path   whther to go to TG1 or TG2
-2. round robin internally in target groups to which server 
-
-==============
-OSI Model
-==============
-
-=> Open Systems Interconnection
-
-=> OSI model represents how request will transfer from client to server
-
-=> OSI model contains 7 layers
-
-
-Layer-7 : Application Layer
-
-Layer-6 : Presentation Layer
-
-Layer-5 : Session Layer
-
-Layer-4 : Transport Layer
-
-Layer-3 : Network Layer
-
-Layer-2 : Data Link Layer
-
-Layer-1 : Physical Layer
-
-
-=> ALB works at layer-7 (application layer)
-
-	Ex: For http, https & microservices
-		Advanced routings
-		header based routing
-		path based routing
-
-=> NLB works at Layer-4 (Transport layer)
-
-	Ex: TCP, UDP
-		For gaming servers
-		For video streaming
-
-=> GWLB works at layer-3 (Network layer)
-
-	Ex: Third party virtual appliances
-		Firewalls
-		VPNs
-		High Security
 
 =====================
 Auto Scaling Groups
@@ -538,11 +392,6 @@ Instance Types
 ====================
 Ec2 Instance Types
 ====================
-1) General Purpose  ---> for general webservers 
-2) Compute Optimized _-->  if you want high configuration speed 
-3) Memory Optimized  -->  if you want speed in RAM 
-4) Storage Optimized  --> if you want to perform lot of read and write operations continuosly
-5) Accelerated Computing --> graphics and calculations continuosly
 
 ============
 EC2 Summary
