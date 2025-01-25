@@ -1,1 +1,86 @@
 
+Linux Interview Questions:
+
+1. What are the basic components of a Linux operating system?
+
+• Explain the kernel, shell, and user space.
+
+2. How do you check the kernel version in Linux?
+
+• Use the command uname -r.
+
+3. What is the difference between hard links and soft links?
+
+• Highlight how hard links point directly to the inode, while soft links are shortcuts.
+
+4. How do you check the list of installed packages on a Linux system?
+
+• For Debian-based systems: dpkg -1.
+
+• For RHEL-based systems: rpm -qa.
+
+5. How do you create a new user and add it to the sudo group?
+
+• Use useradd <username> and usermod -aG sudo <username>.
+
+6. How do you check if a process is running, and how do you stop it?
+
+• Use ps aux | grep <process_name> to find the process.
+
+• Use kill <PID> to stop it.
+
+7. What command lists files smaller than 5MB in a directory?
+
+• Use find. -type f -size -5M.
+
+8. How do you check disk space usage?
+
+• Use df -h for disk usage and du -sh <directory> for specific directory usage.
+
+9. How do you check free and used memory on a Linux system?
+
+• Use free -h or top/htop.
+
+10. What is a cron job, and how do you schedule one?
+
+• Explain cron as a scheduler and use crontab -e to define tasks.
+
+11. How do you search for a string in a file in Linux?
+
+• Use grep '<string>' <file>.
+
+12. What is the difference between chmod and chown?
+
+• chmod changes permissions, and chown changes ownership.
+
+13. How do you view system logs in Linux?
+
+• Use journalctl, dmesg, or check /var/log/.
+
+14. How do you find the IP address of a Linux system?
+
+• Use ip addr show or ifconfig.
+
+15. What is a shell, and how does it differ from the terminal?
+
+• Explain the shell as an interface for executing commands, and the terminal as a user interface for the shell.
+
+16. What is the difference between df and du?
+
+• df shows filesystem disk usage, and du shows directory/file disk usage.
+
+17. How do you add a static route in Linux?
+
+• Use ip route add <destination> via <gateway>.
+
+18. How do you change file permissions recursively in a directory?
+
+• Use chmod -R <permissions> <directory>.
+
+19. How do you monitor system resource usage in real-time?
+
+• Use top, htop, or vmstat.
+
+20. What is a swap partition, and why is it used?
+
+• Explain swap as a space on the disk used when RAM is full.
