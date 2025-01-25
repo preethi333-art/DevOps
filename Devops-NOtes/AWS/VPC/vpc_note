@@ -1,0 +1,104 @@
+IN AWS we have 2 types of services
+AWS managed services-->(SAAS) managed by AWS ex: s3
+customer Managed services --> (IAAS,PAAS) --> customer managed services are all in VPC
+
+IN VPC there are 2 types of subnet:
+1. public subnet--> anyone can access--> has internet connection
+2. private subnet--> no internet connection
+------------------------------------------------------------------------
+Internet gateway : allows communication between your VPC and the internet--> 2 way 
+if private subnet want to install anything from internet we have NAT GATEWAY
+NAT GATEWAY for Private subnet: created in public subnet --> allows internet only outgoing
+              connect route tables to NAT GATEWAy
+
+
+
+              It looks like the structure you shared has formatting issues, and I can clarify and adjust it for a clean representation. Here's a corrected version of the diagram:
+
+```
++-----------------------------------------------------------+
+|                       AWS Region                          |
+|                                                           |
+|   +---------------------------------------------------+   |
+|   |                        VPC                        |   |
+|   |                                                   |   |
+|   |   +------------------+  +------------------+  +------------------+   |
+|   |   | Public Subnet    |  | Private Subnet   |  | Private Subnet   |   |
+|   |   | (AZ-1)           |  | (AZ-1)          |  | (AZ-2)           |   |
+|   |   |   Instances      |  |   Instances     |  |   Instances      |   |
+|   |   +------------------+  +------------------+  +------------------+   |
+|   |          |                     |                     |               |
+|   |   +-------------------+         |                     |               |
+|   |   | Public Route Table |         |                     |               |
+|   |   | 0.0.0.0/0 -> IGW   |         |                     |               |
+|   |   +-------------------+         |                     |               |
+|   |          |                     |                     |               |
+|   |   +-------------------+         +---------------------+               |
+|   |   |     NAT Gateway    |--------> Private Route Table                 |
+|   |   +-------------------+         0.0.0.0/0 -> NAT                      |
+|   |                                                   |                   |
+|   +---------------------------------------------------+                   |
+|                                                           |
+|          +-----------------+                              |
+|          | Internet Gateway|                              |
+|          +-----------------+                              |
++-----------------------------------------------------------+
+```
+
+### Key Components:
+1. **Public Subnet**:
+   - Instances in the public subnet use a **Public Route Table**.
+   - Public Route Table points `0.0.0.0/0` to the **Internet Gateway (IGW)** for external access.
+
+2. **Private Subnets**:
+   - Instances in private subnets are connected via a **Private Route Table**.
+   - Private Route Table points `0.0.0.0/0` to the **NAT Gateway** for outbound internet access.
+
+3. **Internet Gateway (IGW)**:
+   - Allows public internet access to instances in the **Public Subnet**.
+
+4. **NAT Gateway**:
+   - Allows instances in **Private Subnets** to access the internet without exposing them to inbound connections.
+
+5. **Route Tables**:
+   - **Public Route Table**: Routes to the IGW for public subnets.
+   - **Private Route Table**: Routes to the NAT Gateway for private subnets.
+
+
+
+Client (Internet) --> Internet Gateway (IGW) --> Public Route Table --> Public Subnet --> Target Instance
+
++-------------------------------------------+
+|                 Internet                  |
+|                (Client)                   |
++--------------------|-----------------------+
+                     |
+             +-------▼-------+
+             | Internet      |
+             | Gateway (IGW) |
+             +-------|-------+
+                     |
+       +-------------▼-------------+
+       | Public Subnet             |
+       |                           |
+       | +-----------------------+ |
+       | | Route Table           | |
+       | | 0.0.0.0/0 -> IGW      | |
+       | +-----------|-----------+ |
+       |             |             |
+       |      +------▼------+      |
+       |      | EC2 Instance |     |
+       |      | (Public IP)  |     |
+       |      +-------------+      |
+       +---------------------------+
+
+
+internet
+public ip
+internet gateway 
+public subnet
+load balancer
+route tables
+Security group/NACL
+
+NAT GATEWAY MASK

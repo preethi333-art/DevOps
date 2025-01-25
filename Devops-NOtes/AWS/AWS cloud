@@ -73,6 +73,7 @@ What is Cloud Computing?
 				- Availability
 				- Security
 				- Backup etc...
+
 ================
 Cloud Providers
 ================
@@ -86,6 +87,19 @@ Cloud Providers
 4) Salesforce
 
 5) Ali Baba.....
+
+TYPES OF CLOUD COMPUTING
+===========================
+### **Cloud Computing Service Models:**
+- IaaS (Infrastructure as a Service)
+- PaaS (Platform as a Service)
+- SaaS (Software as a Service)
+
+### **Cloud Computing Deployment Models:**
+- Public Cloud
+- Private Cloud
+- Hybrid Cloud
+- Community Cloud
 
 ======================
 Cloud Service Models

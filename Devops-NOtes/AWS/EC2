@@ -59,7 +59,7 @@ TO create EC2
 		EC2 Windows VM : 30 GB (default)
     EC2 Linux VM : 8 GB (default)		
     EBS Max Capacity: 16 TB
-
+The maximum number of EBS volumes that can be attached to an EC2 instance is 128.
 => For EC2 VM, network will be provided by VPC service	
 
 => For EC2 vm creation we will use AMI (Amazon Machine Image)
