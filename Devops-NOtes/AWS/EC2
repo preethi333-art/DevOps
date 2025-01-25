@@ -35,6 +35,7 @@ TYPES OF EC2 INSTANCES
 5) Accelerated Computing --> graphics and calculations continuosly --> P3, P2, Inf1, G4, G3, F1
 ======================================================================================
 REGION
+1.SECURITY, LATENCY
 --> give me ec2 instance in particular region(europe)
 if you are working with european client they want to keep near to them
 also for less latency
