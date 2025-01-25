@@ -2,8 +2,10 @@
 EC2 Service
 ============
 question what is ec2?
-
+  
 =>1. Elastic Compute Cloud, It is Most demanded service in AWS
+asking AWS to give Virtual Machine on your cloud platform which is elastic
+in nature                     
 => 2. It is Used to create Virtual Machines in AWS cloud
 => EC2 VM is called as EC2 instance
 EC2 Instance = Computer / Server / VM / Virtual Machine / V Box
