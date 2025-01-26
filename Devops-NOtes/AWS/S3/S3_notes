@@ -25,7 +25,14 @@ Note: By default, buckets and objects are private (we can them as public).
 
 -> We can create multiple buckets in s3.
 
+why s3 bucket name unique?
+
+s3  based on bucker name create sub domain for object url
+ashokitbucket101  --> bucket name
+object url
 https://ashokitbucket101.s3.ap-south-1.amazonaws.com/SB_NG_Docker_K8S_Project_Setup.pdf
+
+
 
 -> S3 is global service where buckets are regional specific.
 
