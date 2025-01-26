@@ -1,7 +1,8 @@
 =================================
 AWS S3 (Simple Storage Service)
 =================================
-EC@ RDS S3 bucket not s3 --> regional services
+EC2 RDS S3 bucket --> regional services
+S3 service is regional
 -> S3 is a storage service in AWS cloud
 
 -> S3 supports unlimited storage
