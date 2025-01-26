@@ -123,3 +123,62 @@ ELB benefits
 3. health check every one min it will ping
 
 when new server got created then how our website content shared
+
+
+PROJECT
+
+https://youtu.be/FZPTL_kNvXc?si=wnI8E-zMUt4NdkX0
+**Project Overview**
+- **Objective**: Implement a real-time production-grade AWS project using concepts learned from previous lessons, including EC2 instances, VPC, subnets, security groups, and load balancers .
+
+**Architecture**
+- **VPC Creation**: The project demonstrates how to create a Virtual Private Cloud (VPC) to secure applications in a production environment. The architecture includes:
+  - **Public Subnet**: Contains the load balancer and NAT Gateway.
+  - **Private Subnet**: Hosts the applications .
+  
+- **Traffic Flow**: Users access the application through the internet gateway to the load balancer, which then routes traffic to the applications in the private subnet .
+
+**Key Components**
+1. **Availability Zones**: The project uses two availability zones to ensure high availability. If one zone goes down, the other continues to serve traffic .
+   
+2. **NAT Gateway**: Masks the IP address of the applications when accessing the internet, enhancing security .
+
+3. **Auto Scaling Group**: Automatically adjusts the number of EC2 instances based on incoming traffic. For example, if traffic increases, the group can scale from 2 to 4 instances .
+
+4. **Load Balancer**: Distributes incoming traffic across multiple servers to ensure no single server is overwhelmed. It can also perform path-based and host-based routing .
+
+5. **Bastion Host**: A secure server that allows SSH access to the private subnet instances without exposing them directly to the internet .
+
+**Implementation Steps**
+- **Creating the VPC**: Use the AWS console to create a VPC with public and private subnets across two availability zones. Ensure the public subnet is attached to an internet gateway for external access .
+
+- **Setting Up Auto Scaling Group**: Configure the group to launch instances in the private subnet, ensuring they can scale based on traffic demands .
+
+- **Configuring Security Groups**: Define inbound rules for the EC2 instances, allowing SSH access and application-specific ports .
+
+- **Deploying Applications**: Launch applications within the auto scaling group, ensuring they can handle varying loads effectively .
+
+**Conclusion**
+This project integrates various AWS services to create a secure, scalable architecture suitable for production environments, ensuring high availability and efficient resource management.
+
+
+**Auto Scaling and EC2 Instances**
+- **Auto Scaling Group Creation**: An auto scaling group is created with a desired capacity of 2, which results in the creation of two EC2 instances in different availability zones: Us East 1A and Us East 1B , , .
+
+**Bastion Host Setup**
+- **Purpose of Bastion Host**: A Bastion host acts as a secure gateway between the private subnet and external access, allowing SSH access to instances without public IP addresses .
+- **Creating the Bastion Host**: Launch an instance named Bastion host using Ubuntu, ensuring it is in the same VPC as the private instances and has SSH access , .
+
+**SSH Access and Key Management**
+- **Key Pair Management**: The Bastion host must have the necessary key pair to access the private instances. Use SCP (Secure Copy Protocol) to copy the key file from your personal laptop to the Bastion host , .
+
+**Application Deployment**
+- **Installing Applications**: After accessing the private instance via the Bastion host, install a simple Python application and create an HTML page to demonstrate the application , .
+
+**Load Balancer Configuration**
+- **Creating the Load Balancer**: Set up an application load balancer in a public subnet that can route traffic to the EC2 instances. The load balancer should be configured with a target group that includes both instances , .
+- **Health Checks**: The target group performs health checks on the instances, ensuring that traffic is only routed to healthy instances .
+
+**Testing and Demonstration**
+- **Accessing the Load Balancer**: Once the load balancer is active, test access from the internet. If configured correctly, it should respond with the application hosted on one of the instances , .
+- **Load Balancing Behavior**: When both instances are healthy, requests to the load balancer should alternate between the two applications deployed on the instances, demonstrating the load balancing functionality .
