@@ -306,6 +306,8 @@ How to create users and manage user permissions
 -> Manage Roles & Assign Roles
 
 Note: By default admin role will be available and we can create custom role based on requirement
+by default we have matrix based security --> in this we need to add each user and givr permission--> user level permission
+install Role-based Authorization Strategy plugin --> role level access
 
 -> In Role we can configure what that Role assigned user can do in jenkins
 
@@ -350,10 +352,6 @@ Working with User Roles in Jenkins
 
 ## Step-5 : Test the user login functionality
 
-
-##############
-12-July-2024
-##############
 
 ========================================
 Jenkins - Master & Slave Architecture
@@ -635,7 +633,7 @@ pipeline {
         stage('Deployment'){
             steps{
                 sshagent(['tomcat-server-credentials']) {
-                   sh 'scp -o StrictHostKeyChecking=no 
+                   sh 'scp -o StrictHostKeyChecking=no   
                         target/01-maven-web-app.war 
                         ec2-user@public-ip:/home/ec2-user/apache-tomcat-9.0.91/webapps'
                 }
@@ -643,8 +641,9 @@ pipeline {
         }
     }
 }
-
-
+-o means option
+--> if one linux want to communicate with other it will check KNOWN_HOST whether machine IP configured here(in .ssh
+) or not here one machine donno  another so instead directly checking known host we are saying communicate with ssh agent
 ################################
 Email Notifications In Jenkins
 ################################
