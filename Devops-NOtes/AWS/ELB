@@ -66,11 +66,13 @@ user  (internally)
 in browser, it will do automation uses http  
 no nned to specify explicitly
 
-6.Presentation layer(encryption and decryption) --> should this request secure or its okay to send insecure request take care of encrypting your request using SSL/TLS algorithm
+6.Presentation layer(encryption and decryption) --> should this request secure or its okay to send insecure request
+take care of encrypting your request using SSL/TLS algorithm
 
 5.session layer(create a session object)--> what kind of client requested when created
 
-4.transport layer(request segregated into smaller chunks)--> split in to small chunks, and chexks flows any errors sever easily read
+4.transport layer(request segregated into smaller chunks)--> split in to small chunks, and chexks flows any errors
+sever easily read
 3.network layer(routers) --> your req goes to multiple routers--used for logical addressing
 2.Datalink layer(switch) --> we have all switches --used for physical addressing
 1.physical layer(cable) --> all cables connected to server 
