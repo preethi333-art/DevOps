@@ -62,7 +62,8 @@ ur request from user is travelling 7 diff layers
 
 user  (internally)
   |                                                                           
-7.Application layer(http/https) --> decide what kind of protocol used to talk to server http/sftp/ftp we wont specify in browser, it will do automation uses http  
+7.Application layer(http/https) --> decide what kind of protocol used to talk to server http/sftp/ftp we wont specify 
+in browser, it will do automation uses http  
 no nned to specify explicitly
 
 6.Presentation layer(encryption and decryption) --> should this request secure or its okay to send insecure request take care of encrypting your request using SSL/TLS algorithm
