@@ -57,3 +57,421 @@ we need to add jacoco in our pom
 
 -> If you want to setup the quality gate to watch below video
 https://youtu.be/RnTnuSbCyIY?si=IVVppv0pgriqRZHj        --> (1.10)
+
+
+=========================================================================
+|
+
+
+
+
+
+
+/var/run/docker.sock: connect: permission denied
+
+
+local testing
+
+1. git clone 
+2. mvn build it will create a jar in target folder
+3. we have Docker file --> create image and create container
+4. access ip:8010
+commands: used locally
+    4  sudo yum update -y
+    5  sudo yum install git maven -y
+
+   29  sudo dnf install -y java-11-amazon-corretto
+   30  maven -version
+   31  mvn -version
+   32  git clone https://github.com/preethi333-art/Jenkins-Zero-To-Hero.git
+   35  sudo yum install docker -y
+   37  cd Jenkins-Zero-To-Hero/
+   39  cd java-maven-sonar-argocd-helm-k8s/
+   41  cd spring-boot-app
+   51  ll
+   52  mvn clean install
+   53  sudo systemctl enable docker.service
+   54  sudo systemctl start docker.service
+   55  sudo systemctl status docker.service
+   56  ll
+   57  docker ps
+   58  sudo usermod -aG docker ec2-user
+   59  docker ps
+   60  sudo docker ps
+   61  sudo docker build -t img1 .
+   62  ll
+   63  docker images
+   64  sudo docker images
+   65  docker run -it --name c1 -p 8010:8080 img /bin/bash
+   66  sudo docker run -it --name c1 -p 8010:8080 img /bin/bash
+   67  sudo docker run -it --name c1 -p 8010:8080 img1 /bin/bash
+   68  sudo docker ps
+   69  history
+==================================================================================================
+# You can change this base image to anything else
+# But make sure to use the correct version of Java
+FROM adoptopenjdk/openjdk11:alpine-jre
+
+# Simply the artifact path
+ARG artifact=target/spring-boot-web.jar
+
+WORKDIR /opt/app
+
+COPY ${artifact} app.jar
+
+# This should not be changed
+ENTRYPOINT ["java","-jar","app.jar"]
+
+
+# Stage 1: Build the application
+FROM maven:3.8.5-openjdk-11 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run the application with a minimal JRE
+FROM adoptopenjdk/openjdk11:alpine-jre
+WORKDIR /opt/app
+COPY --from=builder /app/target/*.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
+
+
+
+pipeline {
+  agent {
+    docker {
+      image 'abhishekf5/maven-abhishek-docker-agent:v1'                         -----> we need to write this docker file
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+    }
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+        sh 'echo passed'
+        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+      }
+    }
+    stage('Build and Test') {
+      steps {
+        sh 'ls -ltr'
+        // build the project and create a JAR file
+        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+      }
+    }
+    stage('Static Code Analysis') {
+      environment {
+        SONAR_URL = "http://34.201.116.83:9000"
+      }
+      steps {
+        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+        }
+      }
+    }
+    stage('Build and Push Docker Image') {
+      environment {
+        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
+        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+      }
+      steps {
+        script {
+            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+                dockerImage.push()
+            }
+        }
+      }
+    }
+    stage('Update Deployment File') {
+        environment {
+            GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
+            GIT_USER_NAME = "iam-veeramalla"
+        }
+        steps {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "abhishek.xyz@gmail.com"
+                    git config user.name "Abhishek Veeramalla"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                    git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+            }
+        }
+    }
+  }
+}
+
+
+
+
+	
+	
+	pipeline {
+    agent any
+
+    tools {
+        nodejs 'node22'
+    }
+
+    environment {
+        DOCKER_IMAGE = "swigy"
+        SCANNER_HOME = tool 'sonar-scanner'
+        AWS_REGION = 'us-east-1'  // Update your AWS region
+        AWS_ACCOUNT_ID = '869935101375'
+        ECR_REPOSITORY = 'frissly'
+    }
+
+    stages {
+        stage('Remove All Previous Docker Images') {
+            steps {
+                sh 'docker rmi -f $(docker images -a -q) || true'
+            }
+        }
+
+        stage('Cleanup Old Trivy Reports') {
+            steps {
+                script {
+                    echo "Cleaning up old Trivy reports..."
+                    sh '''
+                        rm -f trivy.txt
+                        rm -f fs-report.html
+                    '''
+                }
+            }
+        }
+
+        stage('Get Code') {
+            steps {
+                git branch: 'main', credentialsId: 'Github_id', url: 'https://github.com/manoj7894/swiggy-nodejs-devops-project.git'
+            }
+        }
+
+        stage('Install Package Dependencies') {
+            steps {
+                sh "npm install"
+            }
+        }
+
+        stage('Check for Tests') {
+            steps {
+                script {
+                    def testScriptExists = sh(script: "grep -q '\"test\":' package.json", returnStatus: true) == 0
+                    env.TEST_SCRIPT_EXISTS = testScriptExists ? 'true' : 'false'
+                }
+            }
+        }
+
+        stage('Trivy Filesystem Scan') {
+            steps {
+                script {
+                    sh "trivy fs --format table -o fs-report.html ."
+                }
+            }
+        }
+
+        stage('OWASP Scan') {
+            when {
+                expression {
+                    fileExists('package.json')
+                }
+            }
+            steps {
+                dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('SonarQube') {
+            steps {
+                withSonarQubeEnv('Sonar_Install') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Validate \
+                    -Dsonar.projectKey=Validate \
+                    -Dsonar.host.url=http://54.173.242.65:9000'''
+                }
+            }
+        }
+
+        stage('Stage V: QualityGates') {
+            steps {
+                echo "Running Quality Gates to verify the code quality"
+                script {
+                    timeout(time: 2, unit: 'MINUTES') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'Docker_id', toolName: 'Docker') {
+                        // Ensure image is tagged with the ECR URL and build number
+                        sh "docker build -t ${DOCKER_IMAGE} ."
+                    }
+                }
+            }
+        }
+        
+        stage('Trivy Image Scan') {
+            steps {
+                script {
+                    sh "trivy image ${DOCKER_IMAGE} > trivy.txt"
+                }
+            }
+        }
+
+        stage('Create ECR Repository if Not Exists') {
+            steps {
+                script {
+                    sh '''
+                        # Check if the repository exists, if not, create it
+                        aws ecr describe-repositories --repository-names ${ECR_REPOSITORY} --region ${AWS_REGION} || \
+                        aws ecr create-repository --repository-name ${ECR_REPOSITORY} --region ${AWS_REGION}
+                    '''
+                }
+            }
+        }
+
+        stage('Push Into ECR') {
+            steps {
+                  {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_Credetilas_id']]) {
+                        sh '''
+                            # Login to AWS ECR
+                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                            
+                            # Check if the image exists locally
+                            docker images | grep ${DOCKER_IMAGE}
+                            
+                            # Tag the Docker image with the correct ECR repository
+                            docker tag ${DOCKER_IMAGE} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+                            
+                            # Push the Docker image to ECR
+                            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                def jobName = 'Frissly'
+                def buildNumber = env.BUILD_NUMBER
+                def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+                def bannerColor = pipelineStatus.toUpperCase() == 'SUCCESS' ? 'green' : 'red'
+
+                def body = """<html>
+                                <body>
+                                    <div style="border: 4px solid ${bannerColor}; padding: 10px;">
+                                        <h2>${jobName} - Build ${buildNumber}</h2>
+                                        <div style="background-color: ${bannerColor}; padding: 10px;">
+                                            <h3 style="color: white;">Pipeline Status: ${pipelineStatus.toUpperCase()}</h3>
+                                        </div>
+                                        <p>Check the <a href="${BUILD_URL}">console output</a>.</p> 
+                                    </div>
+                                </body>
+                            </html>"""
+
+                emailext(
+                    subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()}",
+                    body: body,
+                    to: 'manojvarmapotthutri@gmail.com',
+                    from: 'jenkins@example.com',
+                    replyTo: 'jenkins@example.com',
+                    attachmentsPattern: '*/fs-report.html,*/trivy.txt',
+                    mimeType: 'text/html'
+                )
+            }
+        }
+    }
+}
+=============================================================================================================================================
+sonarqube
+
+says in this part we have code smell/bugs/vulerabilities
+ 
+# Sonar-qube will use to check the below things
+-> Code Quality Check
+-> Code Coverage --> say in percentage How much Source code is tested by Unit test cases
+                     atleast 80% tested
+-> Code Quality Gate
+
+# What is Code Quality Check
+-> Code Quality Check means Checking the quality of code to find out these kind of issues
+    -> Bugs(CODING WRONG)  --> It's Going to make the application in wrong way that's we called bug
+    -> Code Smell(code working but create confusion)  --> Code is working but It
+		is not written proper way it could cause issued in feature that section we called code smell
+    -> Duplicate  --> Same has written mulitples times that section we called Duplicate
+    -> Security Vulnerability  --> Security Vulnerability that refer to that section of code where having the security risk for sure
+    -> Security Hotpots  --> Security Hotpots that refers to that section code right now which is not having any kind of issues but we have some indication we have some security issues. we have manually review the code to find out the issues.
+
+
+# What is Code Coverage
+-> How much Source code is tested by Unit test cases
+Ex:- If you get 60% of code coverage it means when your Unit test case has tested only 600 lines of code out of 1000 lines.
+        Then Code Coverage let us know you have to run some more test cases to cover the remaining lines. As well as it will let us know The code which we tested really it is needed or unless or junk code
+
+sonarqube has compatible with all programming language  
+
+sonarqube having 2 versions
+Community version   -->  free limit on how many lines of code it can perform analysis
+Developer version  ---> paid version
+
+# What is Code Quality Gate
+-> We have to setup the parameters based on our company requirments. It should be pass that certain criteria that's we called code quality gate
+-> parametes are Code coverage 80%, Security 5%, Deplicates 0% 
+       
+docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+
+A Quality Profile  --> what kind of sourcode in which language it is written              
+                       it has rules it will findout whre are bugs and code smells
+					   if you want you can create your owm custom quality profiles
+					   we can install from market place if you dont have installed
+ Quality Gate  -->  we can set certain conditions ex  how much code coverage you want
+sonarqube-scanner and eclipse temuran for jdk  --> plugins
+install tools in global tool configurataion
+
+we need to add jacoco in our pom
+# What is the difference between Quality Profile and Quality Gate
+-> A Quality Profile in SonarQube defines the set of rules for analyzing code quality, 
+-> while a Quality Gate defines the criteria that a project must meet to pass a quality check.
+
+
+# Types of Sonar version
+-> Community Edition   --> We can perform analysis on main branch
+-> Developer Edition   --> We can perform analysis on multiple branches
+-> Enterprice Edition  --> We can perform analysis on multiple branches
+
+
+-> If you want to setup the quality gate to watch below video
+https://youtu.be/RnTnuSbCyIY?si=IVVppv0pgriqRZHj        --> (1.10)
+
+
+
+
+I initially started in a development project, where I worked on writing APIs using Java and Spring Boot. Later,
+ I transitioned into a DevOps role, where I focused on writing CI/CD pipelines, Dockerfiles, and setting up monitoring solutions.
+
+Currently, I am involved in a project where I write Terraform scripts to deploy resources and continue working on Jenkins pipelines.
+ I am always eager to learn and implement automation strategies that improve deployment efficiency and system reliability.
+ 
+ github--> jenkinsfile(cI)---> CD USING TERRAFORM deploy in APPRUNNER SERVice --> APP RUNNER AUTOMATICALLY GO TRIGGERED
+          1. build 
+		  2. sonarqubescan
+		  3. create image using docer file 
+		  4. push to ecr
+		  2. 
+		  java code-->
+		  
