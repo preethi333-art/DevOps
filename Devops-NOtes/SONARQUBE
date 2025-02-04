@@ -491,4 +491,54 @@ Known vulnerabilities (CVEs)
 IaC issues and misconfigurations  
 Sensitive information and secrets  
 Software licenses  
-		  
+
+
+
+
+================================================================================================
+
+
+
+
+Here is some useful text regarding basic Trivy commands:
+
+```plaintext
+1. **Scan an Image:**
+   ```bash
+   trivy image imagename:1.0
+   ```
+   This command scans a specific Docker image.
+
+2. **Scan a Filesystem:**
+   ```bash
+   trivy fs --security-checks vuln,config folder
+   ```
+   This command scans the filesystem at the given folder path, checking for vulnerabilities and configuration issues.
+
+3. **Scan an Image with Severity Filters:**
+   ```bash
+   trivy image --severity HIGH,CRITICAL jenkins/jenkins
+   ```
+   This command scans an image and filters results to show only high and critical severity vulnerabilities.
+
+4. **Output Results in JSON:**
+   ```bash
+   trivy image -f json -o results.json jenkins/jenkins
+   cat results.json | jq
+   ```
+   This command outputs the scan results in JSON format, which can then be processed with `jq` for better readability.
+
+5. **Scan a Repository:**
+   ```bash
+   trivy repo repo-url
+   ```
+   This command scans a repository from a given URL.
+
+6. **Scan a Kubernetes Cluster:**
+   ```bash
+   trivy k8s --report summary cluster
+   ```
+   This command scans a Kubernetes cluster and provides a summary report.
+```
+
+Feel free to use these commands as needed! If you have any specific questions about Trivy or need further details, just let me know.
