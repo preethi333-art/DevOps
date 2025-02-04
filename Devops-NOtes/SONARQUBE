@@ -542,3 +542,23 @@ Here is some useful text regarding basic Trivy commands:
 ```
 
 Feel free to use these commands as needed! If you have any specific questions about Trivy or need further details, just let me know.
+============================================================================================================================================
+
+
+Sure! Based on the provided Jenkins pipeline script, here are the plugins that are used:
+
+1. **NodeJS Plugin**: This plugin allows the use of NodeJS installations managed by Jenkins. It is used in the `tools` section to specify `nodejs 'node22'`.
+
+2. **SonarQube Scanner Plugin**: This plugin allows integration with SonarQube for static code analysis. It is used in the `SonarQube` stage with the `withSonarQubeEnv` and `sonar-scanner` commands.
+
+3. **OWASP Dependency-Check Plugin**: This plugin performs dependency checks using the OWASP Dependency-Check tool. It is used in the `OWASP Scan` stage with the `dependencyCheck` and `dependencyCheckPublisher` commands.
+
+4. **Docker Pipeline Plugin**: This plugin provides Docker-related capabilities in Jenkins pipelines. It is used in stages like `Build Docker Image` and `Push Into ECR` with the `withDockerRegistry` command.
+
+5. **Amazon Web Services (AWS) Credentials Plugin**: This plugin allows binding of AWS credentials to Jenkins jobs. It is used in the `Push Into ECR` stage with the `AmazonWebServicesCredentialsBinding` command.
+
+6. **Email Extension Plugin**: This plugin extends Jenkins email capabilities to send customizable emails. It is used in the `post` section to send email notifications with the `emailext` command.
+
+7. **Trivy**: Although not a plugin, Trivy is used in multiple stages for filesystem and Docker image scans. Make sure Trivy is installed and accessible on the Jenkins agents.
+
+Feel free to ask if you need any more information or help with Jenkins!
