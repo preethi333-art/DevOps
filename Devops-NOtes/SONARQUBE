@@ -474,4 +474,21 @@ Currently, I am involved in a project where I write Terraform scripts to deploy 
 		  4. push to ecr
 		  2. 
 		  java code-->
+===============================================================================================
+Targets (what Trivy can scan):
+
+Container Image  
+Filesystem  
+Git Repository (remote)  
+Virtual Machine Image  
+Kubernetes  
+AWS  
+
+Scanners (what Trivy can find there):
+
+OS packages and software dependencies in use (SBOM)  
+Known vulnerabilities (CVEs)  
+IaC issues and misconfigurations  
+Sensitive information and secrets  
+Software licenses  
 		  
