@@ -1,0 +1,35 @@
+issues faced in jenkins file
+when ever build fails we first see in the console or /var/lib/jenkins/logs
+ and we have to analyze the logs why those getting failed, as I worked in
+development project it made me easy to differentiate whether the error related to devops or in code 
+1.
+recently we faced 1 issue developer worked on a bug fix and pushed the changes I got error some variable not set like that there
+is something called application.yml they only changed 
+in local but forgot to add in app-dev.yml and other so I asked dev to fix those errors
+CONNOT INITIALIZE A BEAN
+2.
+related to jenkins forgot to add / for webhookurl in github at end   http://<ip>:8080/github-webhook/
+3.
+missed to restart jenkins --> after adding user to docker group
+4.
+missed to add plugins and restarting after adding
+5.
+out of disk issue  try to clean workspace command--> clean ws
+discard old builds
+===================================================================================================
+DOCKER
+when creating image its not creating its not ending
+---> verify base image
+----> always try to use alpine image (might be heavy, might not be official)
+----> try to use from cache if something already there 
+
+sometimes docker container stops running it is not active
+docker logs
+docker stats
+any cpu/ network issue 
+
+crashloopback(pod is coming up but it is not able to comeup)--> out of memory issue, not able to connect properly
+scenario--> database connection issue that pod not able to connect with database
+
+IMAGE PULL BACK--> image we given is not correct, might be image in private registry, token may not be correct
+verify tag name 
