@@ -1,4 +1,5 @@
 issues faced in jenkins file
+N1==============================================================================================================
 when ever build fails we first see in the console or /var/lib/jenkins/logs
  and we have to analyze the logs why those getting failed, as I worked in
 development project it made me easy to differentiate whether the error related to devops or in code 
@@ -16,7 +17,118 @@ missed to add plugins and restarting after adding
 5.
 out of disk issue  try to clean workspace command--> clean ws
 discard old builds
-===================================================================================================
+N22222222222222222222222222222222222222222===================================================================================================
+JENKINS
+Jenkins Timeout Configuration**: Learn how to set up Jenkins to automatically abort a build if it gets stuck for too long.
+ Problem Scenario**: If a Jenkins job gets stuck (e.g., due to network or other issues), it can continue consuming 
+resources without producing any output.
+
+- **Timeout Strategies**: Jenkins allows two main timeout strategies:
+  1. **Absolute Timeout**: Set a fixed timeout (e.g., 3 minutes). If the job doesn't complete within this time, Jenkins will automatically abort it.
+  2. **Deadline**: Set a specific deadline (e.g., 5 PM). The build must be completed before this time, or Jenkins will abort the build.
+
+- **Setting Timeout in Jenkins**: 
+  - Go to "Configure" > "Build Environment."
+  - Enable "Abort the build if it's stuck."
+  - Choose a timeout strategy (Absolute or Deadline).
+
+- **Timeout Actions**: You can configure Jenkins to either:
+  - **Abort** the build automatically when the timeout is reached.
+  - **Mark the build as failed** if it exceeds the time limit.
+- **Absolute Timeout Example**: Set a timeout (e.g., 3 minutes) to stop the build if it takes longer than the specified time.
+- **Deadline Example**: Set a deadline (e.g., 5 PM) for the build completion. If the build doesn't finish by the deadline,
+it will be aborted.
+ **Practical Demo**: The video shows an example where a build is aborted after 3 minutes and a second example where a 
+deadline of 9:40 PM is set, causing the build to be stopped if not completed on time.
+- **Customizing Timeout Settings**: You can adjust the timeout or deadline and the tolerance window to provide 
+flexibility (e.g., a 5-minute buffer after a deadline).
+- **Importance**: This feature helps optimize Jenkins resources by preventing stalled or long-running builds from consuming
+unnecessary CPU and memory. 
+
+This approach will allow you to clearly discuss Jenkins timeout configuration and its practical applications in an interview 
+setting.
+========================================================================================================================================
+SOLUTION
+Logs and system resource checks can provide insight into why a job is stuck.
+mainly its because of system's resources (memory, CPU, etc.) or setting up more Jenkins agents (slaves) to distribute the load.
+Scaling Jenkins resources and updating plugins can help prevent recurrent issues.
+====N33333333333333333333333333333333333===================================================================================================================
+ HOW TO ENSURE  Jenkins pipeline continues to the next stage even if a previous stage fails
+
+
+
+to ensure your Jenkins pipeline continues to the next stage even if a previous stage fails is by using the `post` section with the `always` condition. Here's an example:
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                // Add your build commands here, e.g., mvn clean install
+                // Simulate a failure
+                sh 'exit 1'
+            }
+            post {
+                always {
+                    echo 'Build stage completed, moving to the next stage...'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // Add your test commands here, e.g., mvn test
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                // Add your deploy commands here, e.g., scp target/*.jar user@server:/path/to/deploy
+            }
+        }
+    }
+}
+```
+
+In this example:
+- The `post` section with the `always` condition is added to the `Build` stage. This ensures that the message "Build stage completed, moving to the next stage..." is always printed, regardless of whether the stage succeeds or fails.
+- The pipeline will continue to the `Test` and `Deploy` stages even if the `Build` stage fails.
+
+This method provides a clear indication in the logs that the pipeline is moving forward despite any failures.
+
+Would you like to explore more advanced Jenkins pipeline features?
+
+======44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444====================
+
+pipeline {
+    agent any
+    stages {
+         stage('Build') {
+            steps {
+                echo 'HELLO JOB1'
+            }
+        }
+        stage('Trigger Job 2') {
+            steps {           |-----------------------------------------> name of job2
+                build job: 'Job 2', wait: true, propagate: true
+            }
+        }
+        stage('Back from Job 2') {
+            steps {
+                echo 'Back from Job 2'
+            }
+        }
+    }
+}
+
+
+
+
+=============================================================================================================================
+
 DOCKER
 when creating image its not creating its not ending
 ---> verify base image
@@ -32,4 +144,14 @@ crashloopback(pod is coming up but it is not able to comeup)--> out of memory is
 scenario--> database connection issue that pod not able to connect with database
 
 IMAGE PULL BACK--> image we given is not correct, might be image in private registry, token may not be correct
-verify tag name 
+verify tag name
+
+what happens if I give same stage name
+Copilot said:
+Copilot
+In Jenkins, if you give the same name to multiple stages within a pipeline, Jenkins will treat them as a single stage. This can lead to unexpected behavior, such as:
+
+Overwriting Steps: The steps defined in the later stage with the same name will overwrite the steps of the earlier stage.
+Confusing Logs: The build logs might become confusing, as it will be unclear which steps belong to which stage.
+Pipeline Visualization: The pipeline visualization in Jenkins will only show one stage with that name, making it difficult to understand the pipeline flow.
+To avoid these issues, it's best to ensure that each stage in your Jenkins pipeline has a unique name.
