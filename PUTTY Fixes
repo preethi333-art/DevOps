@@ -1,3 +1,17 @@
 If we lost our PPK file, again if we create ppk file using pem and  login, it throws error like "NO SUPPORTED AUTHENTICATION AVAILABLE"
 Before loadong ppk from pem through PUTTY GEN
 goto Key---> parameters for saving key files---> ppk file version choose 2---> OK ----> load
+
+
+
+
+I 
+Recover EC2 Instance PEM file 
+1) Create New Instance 
+2) Stop Both Instance 
+3) De-attach and Attach Main Instance EBS with Recovery Instance 
+4) Start Recovery Instance and Mount New Attached Disk 
+5) Copy and paste Recovery Instance.ssh/authorized_keys file content with Attached EBS .ssh/authorized_keys file 
+6) Stop Recovery Instance 
+7) De-attach and Attach that EBS with main Instance as root volume 
+8) Connect SSH main Instance from Recovery Instance pem file.
