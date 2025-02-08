@@ -3,9 +3,11 @@ Before loadong ppk from pem through PUTTY GEN
 goto Key---> parameters for saving key files---> ppk file version choose 2---> OK ----> load
 
 
+APPROACH1.
+create AMI from existing machine and attach that to new instance
 
-
-I 
+IAPPROACH2
+https://youtu.be/IbaYMFyH89E?si=CiU80tCJUYVZ8IFt
 Recover EC2 Instance PEM file 
 1) Create New Instance 
 2) Stop Both Instance 
@@ -15,3 +17,19 @@ Recover EC2 Instance PEM file
 6) Stop Recovery Instance 
 7) De-attach and Attach that EBS with main Instance as root volume 
 8) Connect SSH main Instance from Recovery Instance pem file.
+
+APPROACH3.---> with out stopping instance
+https://youtu.be/TwNqizhv7Cw?si=b1m1EHBxmkKkR0-M
+1.change SG of instance inbound --> ssh to anywhere
+2. connect to ec2 from console no need pem
+3. ssh-keygen -t rsa --> t will create in /home/ubuntu/.ssh/
+4. 2 files generated id_rsa and id_rsa.pub private and public key
+5. convert private to specific format using below command earlier it will be begin openssh Private ky
+it will convert to begin and end RSG PK
+ssh-keygen -p -m PEM -f id_rsa
+6.cp id_rsa.pub authorized_keys
+7. cat id_rsa and copy  paste in vscode  change CRLF to LF since we need unix format save as
+pem file name newKey.pem
+8. login using key
+remen=member aws for us create pub and private key gives us prikey and keeps aws pub key in /home/ubuntu/.ssh/authorized_keys
+what we did here is manyally generating pub and pri using ssh-keygen and keeping .pem private key with us and giving pub to aws by pasting in authorized_keys
