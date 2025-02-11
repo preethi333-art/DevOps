@@ -84,3 +84,203 @@ Linux Interview Questions:
 20. What is a swap partition, and why is it used?
 
 • Explain swap as a space on the disk used when RAM is full.
+
+
+Write a bash script to delete files older than 7 days from a directory.
+find /home/user/logs -type f -mtime +7 -delete
+===========================================================================================================
+
+
+Here are some **important Linux interview questions** for a **DevOps role**:  
+
+---
+
+### **1️⃣ Process Management**
+1. How do you check running processes in Linux?  
+   - `ps aux`, `top`, `htop`, `pgrep`  
+
+2. How do you find and kill a process by name?  
+   - `pkill <process_name>` or `kill -9 <PID>`  
+
+3. What’s the difference between `kill`, `pkill`, and `killall`?  
+   - `kill` → Terminates a specific process by PID.  
+   - `pkill` → Kills processes by name.  
+   - `killall` → Kills all processes matching a name.  
+
+---
+
+
+### **2️⃣ File & Directory Management**
+4. How do you find large files on a Linux system?  
+   ```bash
+   find / -type f -size +100M
+   ```
+
+5. How do you delete all `.log` files older than 7 days?  
+   ```bash
+   find /var/log -name "*.log" -type f -mtime +7 -delete
+   ```
+
+6. How do you count the number of lines in a file?  
+   ```bash
+   wc -l filename.txt
+   ```
+
+---
+
+### **3️⃣ User & Permission Management**
+7. How do you create a new user and add them to the `sudo` group?  
+   ```bash
+   useradd -m -G sudo username
+   passwd username
+   ```
+
+8. What does `chmod 755` mean?  
+   - Owner: **read, write, execute** (`7`)  
+   - Group: **read, execute** (`5`)  
+   - Others: **read, execute** (`5`)  
+
+9. What does `chown` do?  
+   - Changes ownership of a file.  
+   ```bash
+   chown user:group file.txt
+   ```
+
+---
+
+### **4️⃣ Networking**
+10. How do you check open ports on a Linux server?  
+    ```bash
+    netstat -tulnp   # Older systems
+    ss -tulnp        # Modern alternative
+    ```
+
+11. How do you test if a remote server is reachable?  
+    ```bash
+    ping -c 4 example.com
+    ```
+
+12. How do you check DNS resolution?  
+    ```bash
+    nslookup example.com
+    dig example.com
+    ```
+
+---
+
+### **5️⃣ System Monitoring & Performance**
+13. How do you check system load?  
+    ```bash
+    uptime
+    ```
+
+14. How do you monitor real-time system resource usage?  
+    ```bash
+    top     # Process monitoring
+    free -m # Memory usage
+    df -h   # Disk usage
+    ```
+
+15. How do you check which process is using the most CPU?  
+    ```bash
+    ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -10
+    ```
+
+---
+
+### **6️⃣ Logs & Debugging**
+16. Where are system logs stored in Linux?  
+    - `/var/log/` directory (e.g., `/var/log/syslog`, `/var/log/messages`)  
+
+17. How do you view real-time logs?  
+    ```bash
+    tail -f /var/log/syslog
+    ```
+
+18. How do you check the last 50 lines of a log file?  
+    ```bash
+    tail -n 50 /var/log/syslog
+    ```
+
+---
+
+### **7️⃣ Disk & Storage Management**
+19. How do you check disk usage?  
+    ```bash
+    df -h
+    ```
+
+20. How do you check which directories are consuming the most space?  
+    ```bash
+    du -sh /*
+    ```
+
+21. How do you create and mount a new filesystem?  
+    ```bash
+    mkfs.ext4 /dev/sdb1
+    mount /dev/sdb1 /mnt
+    ```
+
+---
+
+### **8️⃣ Automation & Scripting**
+22. How do you schedule a cron job to run every day at midnight?  
+    ```bash
+    crontab -e
+    ```
+    Add the following line:  
+    ```
+    0 0 * * * /path/to/script.sh
+    ```
+
+23. How do you list all scheduled cron jobs for a user?  
+    ```bash
+    crontab -l
+    ```
+
+24. How do you create a simple Bash script?  
+    ```bash
+    #!/bin/bash
+    echo "Hello, DevOps!"
+    ```
+
+---
+
+### **9️⃣ Security**
+25. How do you check active firewall rules?  
+    ```bash
+    iptables -L
+    ```
+
+26. How do you disable password login for SSH and allow only key-based authentication?  
+    - Edit `/etc/ssh/sshd_config`:  
+      ```
+      PasswordAuthentication no
+      ```
+
+27. How do you check which users have logged in recently?  
+    ```bash
+    last
+    ```
+
+---
+
+### **🔟 Bonus: DevOps-Specific**
+28. How do you check the version of Terraform installed?  
+    ```bash
+    terraform version
+    ```
+
+29. How do you restart a system service?  
+    ```bash
+    systemctl restart nginx
+    ```
+
+30. How do you check if a service is running?  
+    ```bash
+    systemctl status docker
+    ```
+
+---
+
+Would you like **detailed explanations** for any of these? 🚀
