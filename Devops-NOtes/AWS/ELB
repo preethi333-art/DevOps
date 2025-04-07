@@ -2,6 +2,8 @@
 -> Elastic load Balancer automatically divert the incoming traffic into multiple targets.
 It automatically scales and balances the load to ensure high avaliablity and fault tolerance for application
 
+get  one DNS and we add our
+
 # Types of Load Balancer
 1) Classic Load Balancer
 2) Application Load Balancer
@@ -47,11 +49,11 @@ It is used for security Purpose
 
 
 IN AWS
-#  Types of Load Balancer
-1) Classic Load Balancer
-2) Application Load Balancer
-3) Network Load Balancer
-4) Gateway Load Balancer
+# 4 Types of Load Balancer
+1) Classic Load Balancer 2009 --> works on both application and network layer
+2) Application Load Balancer 2016 layer 7
+3) Network Load Balancer layer 4
+4) Gateway Load Balancer (transport layer + network layer)
                                 
                                    
 & layers of OSI model
@@ -64,15 +66,17 @@ user  (internally)
   |                                                                           
 7.Application layer(http/https) --> decide what kind of protocol used to talk to server http/sftp/ftp we wont specify 
 in browser, it will do automation uses http  
-no nned to specify explicitly
+no need to specify explicitly
 
 6.Presentation layer(encryption and decryption) --> should this request secure or its okay to send insecure request
 take care of encrypting your request using SSL/TLS algorithm
 
 5.session layer(create a session object)--> what kind of client requested when created
 
-4.transport layer(request segregated into smaller chunks)--> split in to small chunks, and chexks flows any errors
+4.transport layer(TCP UDP related protocols)request segregated into smaller chunks)--> split in to small chunks, and chexks flows any errors
 sever easily read
+after segmentation it will convert in to a packet--. ATTACH A IP to this packet 
+in network layer
 3.network layer(routers) --> your req goes to multiple routers--used for logical addressing
 2.Datalink layer(switch) --> we have all switches --used for physical addressing
 1.physical layer(cable) --> all cables connected to server 
@@ -90,7 +94,7 @@ cable--switch-- router
 3) Network Load Balancer
 4) Gateway Load Balancer  transport layer + network layer
 
-   +---------------------+
+          +---------------------+
           |      ELB            |
           +---------------------+
                      |
@@ -286,5 +290,55 @@ Layer-1 : Physical Layer
 		Firewalls
 		VPNs
 		High Security
+
+RAJESH TANIKI:
+scenario1: LB with autosacling
+---------------------------
+Assume we enabled auto scaling we have multiple servers and each server diff IPS
+we cant give diff IPs to clients or diff DNS so,  we create a LB like proxy server and we add
+as a targets in the LB if client hits LB DNS then traffic routed to all targets
+scenario 2: No autoscaling
+--------------------------
+NO access to our server to outsiders, we use as a mediater/ proxy 
+public subnet--> ELB                           
+private subnet--> DB server, app server
+scenario 3: based on IP we add as targets
+---------------------------------------
+***ELB we need to create in 2 or more AZ
+*** ELB dont provide IP it only gives CNAME means domain name we get from AWS
+BENIFITS
+===========
+1.Load balancing
+2. Health check 
+3. SSL encryption/DEcryption at ELB level-->any ip if we want to accept 2 typs of protocols we have
+HTTP(80) and Https(443)
+4. ELB can be used out side of AWS servers also, based on ip
+--->we have public and private Load balancers
+
+
+1) Classic Load Balancer 2009 --> works on both application 7 and network layer  4
+costly, http,Https, TCP, UDP
+only do instances load balancing
+targets--> EC2 ECS,IP
+old 
+2) Application Load Balancer 2016--> layer 7
+HTTP and HTTPs protocals works at ALB
+http, https & microservices
+		Advanced routings
+		header based routing
+		path based routing--> 
+targets--> EC2 ECS,IP, LAMBDA
+3) Network Load Balancer layer 4 TCP/UDP
+No path based or other
+works only based on ip
+
+we only get CNAME for load balancers we discussed 
+but if we want static IP then we use NLB 
+AWS provide 2 public IP (because every LB we have to deploy in 2 AZ)
+based on subnets 2 NICs created in subnet1 NIC1 and subnet2 NIC2
+Network Interface Cards
+targets--> EC2 ECS,IP, 
+4) Gateway Load Balancer (transport layer 4 + network layer 3)
+used only for security purpose
 
 
