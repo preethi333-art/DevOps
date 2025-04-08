@@ -1,0 +1,40 @@
+Excited to share a recent project where I set up a fully automated containerized application on Amazon ECS Fargate, focusing on security, automation, and CI/CD pipeline deployment using Terraform and GitHub Actions.
+
+𝗣𝗿𝗼𝗷𝗲𝗰𝘁 𝗢𝘃𝗲𝗿𝘃𝗶𝗲𝘄:
+This project involved setting up an automated containerized application on Amazon ECS Fargate using Terraform, with Docker images pushed to Amazon ECR. I implemented secure private networking, Blue-Green deployments, and encrypted logging via CloudWatch and KMS.
+
+𝗞𝗲𝘆 𝗖𝗼𝗺𝗽𝗼𝗻𝗲𝗻𝘁𝘀:
+ • Leveraged ECS Fargate to remove infrastructure overhead and 
+ cut costs with pay-per-use pricing.
+ • Configure VPC Interface Endpoints for Amazon ECR and Amazon 
+ S3 to ensure all data traffic remains within the AWS network, 
+ reducing exposure to the public internet.
+ • Build and containerize the application using Docker, and securely 
+ push the image to Amazon Elastic Container Registry (ECR).
+ • Deploy the application on Amazon ECS with health checks, enable 
+ centralized monitoring via CloudWatch Logs, and secure log data 
+ and ECR images using AWS KMS encryption.
+ • Enabled OIDC for GitHub Actions to securely access AWS 
+ resources, enabling seamless CI/CD integration without long-lived 
+ credentials.
+ • Orchestrate Blue-Green deployments on ECS Fargate using GitHub 
+ Actions and AWS CodeDeploy for seamless traffic shifting.
+
+𝗕𝗹𝘂𝗲/𝗚𝗿𝗲𝗲𝗻 𝗗𝗲𝗽𝗹𝗼𝘆𝗺𝗲𝗻𝘁 𝗦𝘁𝗿𝗮𝘁𝗲𝗴𝘆:
+ • Enhances availability by deploying updates to a separate (green) environment first.
+ • Enables safe testing and minimizes rollback risks and downtime.
+ • Improves reliability: Blue/Green deployments provide stable updates with built-in safety features.
+
+𝗩𝗣𝗖 𝗘𝗻𝗱𝗽𝗼𝗶𝗻𝘁𝘀 - 𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆 𝗙𝗶𝗿𝘀𝘁:
+ • Used Interface Endpoints for ECR and S3, ensuring that traffic stays within AWS's private network and has no exposure to the public internet. 
+ • Enhanced security posture and compliance by keeping all traffic private.
+
+𝗞𝗲𝘆 𝗟𝗲𝗮𝗿𝗻𝗶𝗻𝗴𝘀 & 𝗧𝗮𝗸𝗲𝗮𝘄𝗮𝘆𝘀:
+ • VPC endpoints help keep all data within the AWS network, ensuring there’s no exposure to the internet for better security.
+ • Blue-Green deployments with CodeDeploy allow automated updates in a safe way, reducing downtime and risks.
+ • KMS encryption protects data both while it's stored and during transfer, keeping it secure.
+ • Using Infrastructure as Code with Terraform makes setting up and managing infrastructure easier, repeatable, and scalable.
+ • CI/CD with GitHub Actions automates the deployment process, improving efficiency and productivity.
+ • Amazon ECS Fargate offers serverless containers with pay-per-use pricing, integrated with CloudWatch for performance monitoring and security insights.
+
+This project successfully combined DevOps practices, strong security measures, and AWS-native automation to deliver an efficient solution
