@@ -102,3 +102,16 @@ route tables
 Security group/NACL
 
 NAT GATEWAY MASK
+
+security group at ec2 level
+inbound traffic deny all by default
+outbount traffic allow any where by default except 25 beczuse 25 is the mailing service
+AWS doesnot want to record the ip of ec2 where it is hosted
+
+NACL add additional layer of security--> at subnet level  Deny+ allow
+100 --> allow all
+*   --> deny all * is the least priority
+
+least rule number highest priority                     
+ex:
+
