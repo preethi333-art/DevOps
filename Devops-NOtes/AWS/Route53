@@ -1,0 +1,21 @@
+Route53 provide DNS as a service
+Dns resolves domain name to an ip address
+
+why we use DNS
+1.ip address difficult to remember
+2.ip adress can change any time
+
+1. DNS keeps lot of records that basically  maps your domain name (DNS) to the ip adress
+AWS says I will provide DNS as a service
+because havong DNS is complex we have to 
+buy a domain--> hosting solution --> DNS record
+
+request from user--> route53 --> load balancer--> ec2
+
+1. Domain regestration--> purchase ur domain   from aws or outside
+2. hosted zones  --> in HS we create DNS records
+domain name --> ip adress like this we have in hosted zones
+
+route53 also performs health checks on the webservers
+
+
