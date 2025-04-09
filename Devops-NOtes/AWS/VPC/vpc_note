@@ -101,32 +101,8 @@ load balancer
 route tables
 Security group/NACL
 
-
-SG           
-1. assigned to resource
-2.simultaneously apply all rules
-3.you can set only allow rules
-4. stateful
-NACL
-assgined to subnet  --> applied to all resources in that instance
-lower rule number highest priority Rules applies in sequence
-You can set allow and Deny rules
-stateless
-
-Difference between Stateful ans stateless
-we have firewall it has inbound and outbound rule |
-ex:  traffic coming from our external to our ec2 in this case we have to
-allow inbound rule for over internet allow port 80 
- stateful
-==========
-In reverse fst
-if we are initializing the connection from our ec2 to internet, we dont need
-give inbount rule enabled it will automatically identify
-SG is stateful
-for stateless we need to add manually the inbound --> NACL
-thats y people use SG instead NACL
-
 NAT GATEWAY MASK
+
 security group at ec2 level
 inbound traffic deny all by default
 outbount traffic allow any where by default except 25 beczuse 25 is the mailing service
