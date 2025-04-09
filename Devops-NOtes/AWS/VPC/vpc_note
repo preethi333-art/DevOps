@@ -112,6 +112,25 @@ NACL add additional layer of security--> at subnet level  Deny+ allow
 100 --> allow all
 *   --> deny all * is the least priority
 
-least rule number highest priority                     
-ex:
+least rule number highest priority   
 
+
+Securitu group vs NACL                  
+
+1.Assigned To The Instance.
+2.Simultaneously Applies All Rule
+3.You Can Set Only Allow Rules
+4.Stateful
+
+1.Assigned To Subnet
+2.Rules Applies In Sequence
+3.You Can Set Allow and Deny Rules
+4.Stateless
+
+stateful--> when ever we send request from our ec2 to outside we need to enable outbount in ec2
+also if outside server want to send req to our ec2 we have to enable inbound traffic
+if ec2 initiate the connection to the outside server then no need to enable in inbound traffic it
+automatically identify the serverthat is stateful
+stateless--> 
+eventhough ec2 initiate the connection to the outside server then we need to enable that in inbound traffic it wont identify
+automatically that is stateful
