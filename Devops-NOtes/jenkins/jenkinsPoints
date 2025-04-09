@@ -1,0 +1,6 @@
+we can directly install a tool ex: git in jenkins server using yum install jenkins -y
+or we can configure globally like
+
+  (Jenkins Dashboard -> Manage Jenkins --> Global Tools Configuration -> Add maven)
+
+Note: With this configuration, jenkins will download and install maven s/w  
