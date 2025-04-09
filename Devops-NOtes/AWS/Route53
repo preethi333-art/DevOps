@@ -19,3 +19,27 @@ domain name --> ip adress like this we have in hosted zones
 route53 also performs health checks on the webservers
 
 
+✅ What is a CNAME Record?
+A CNAME (Canonical Name) record is a type of DNS record used to alias one domain name to another.
+
+🧠 Example:
+www.example.com → example.com
+So when someone visits www.example.com, the browser looks up example.com instead.
+
+✅ What is an A Record?
+An A (Address) record maps a domain name directly to an IPv4 address.
+
+🧠 Example:
+
+example.com → 192.0.2.1
+So if your server or load balancer has a public IP, the A record helps route traffic directly there.
+
+✅ Difference Between A and CNAME:
+Feature	A Record	CNAME Record
+Points to	IPv4 address	Another domain name
+Common Use	Root domain (like example.com)	Subdomain redirection (like www.example.com)
+Allowed On	Root domains and subdomains	Only subdomains (not root domains)
+DNS Chain	Direct	Indirect (goes through the target)
+
+
+
