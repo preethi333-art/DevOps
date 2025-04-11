@@ -4,3 +4,87 @@ or we can configure globally like
   (Jenkins Dashboard -> Manage Jenkins --> Global Tools Configuration -> Add maven)
 
 Note: With this configuration, jenkins will download and install maven s/w  
+
+
+To implement compliance controls and audit logging for Jenkins pipelines, here’s a practical, real-world approach:
+
+✅ 1. Enable and Configure Audit Trail Plugin
+Plugin: Audit Trail
+
+Logs user activities: job changes, configuration edits, etc.
+
+Location: Manage Jenkins → Configure System → Audit Trail
+
+📌 One-liner: Audit Trail plugin – for tracking all Jenkins user actions (audit compliance).
+
+✅ 2. Use Role-Based Access Control (RBAC)
+Plugin: Role-based Authorization Strategy
+
+Define granular roles (Admin, Developer, Viewer).
+
+Assign permissions by user/team for job control.
+
+📌 One-liner: RBAC plugin – restrict access to sensitive jobs/settings (least privilege).
+
+✅ 3. Store Build Logs and Artifacts Securely
+Use external storage like S3 with access policies.
+
+Retain logs/artifacts as per your audit retention policy.
+
+📌 Use:
+
+groovy
+Copy
+Edit
+archiveArtifacts artifacts: '**/build.log', fingerprint: true
+✅ 4. Enable Job Configuration History Plugin
+Plugin: Job Configuration History
+
+Tracks who changed what & when in pipeline/job configuration.
+
+View diff of config changes.
+
+📌 One-liner: Job Config History plugin – audit Jenkins job changes.
+
+✅ 5. Use Signed Commits and Code Reviews for Jenkinsfiles
+Store Jenkinsfile in Git.
+
+Enforce signed commits and mandatory pull request reviews.
+
+📌 One-liner: Git signed commits + PR approval – enforce pipeline change audit.
+
+✅ 6. Pipeline-Level Logging and Notifications
+groovy
+Copy
+Edit
+pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '50'))
+        timestamps()
+    }
+
+    stages {
+        stage('Audit Log') {
+            steps {
+                sh 'echo "Triggered by: $BUILD_USER_ID"'
+            }
+        }
+    }
+
+    post {
+        always {
+            emailext to: 'audit@example.com',
+                     subject: "Build ${BUILD_NUMBER} Completed",
+                     body: "Pipeline finished for compliance audit."
+        }
+    }
+}
+Let me know your compliance standard (e.g., ISO 27001, SOC2, HIPAA), and I’ll tailor this more specifically for it.
+
+stage('Deploy') {
+  steps {
+    retry(3) {
+      sh './deploy.sh'
+    }
+  }
+}
