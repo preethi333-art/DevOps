@@ -326,6 +326,9 @@ cherrypick vs merge:
 merge will add all files.
 cherrypick will add specific files.
 
+IMPRORTANKT
+https://www.youtube.com/watch?v=4EpBi50wJWQ
+
 
 GIT RESTORE: used to untrack the file.
 git restore --staged raham
