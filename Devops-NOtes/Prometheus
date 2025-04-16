@@ -81,7 +81,6 @@ Prometheus monitors, collects and send monitoring data to Grafand
 Grafana will display that data in beautiful graphs.
 
 Install helm :-
-
 - sudo su -
 - yum install git -y
 (Git is not required for Helm itself, it's necessary for installing plugins or working with Helm repositories that use Git)
@@ -89,3 +88,84 @@ Install helm :-
 - chmod 700 get_helm.sh
 - 1s
 - ./get_helm.sh
+
+
+
+Grafana Overview
+
+
+
+· Grafana is an open-source, interactive visualization web application that offers charts,
+graphs, and alerting capabilities when connected to supported data services.
+
+
+
+. It allows users to query, visualize, alert, and understand metrics, regardless of where
+they are stored.
+
+
+
+· Grafana supports multiple data sources such as Prometheus, AWS CloudWatch,
+AzureMonitor, PostgreSQL, Elasticsearch, and many more.
+Dashboards in Grafana
+
+
+
+. Users can create custom dashboards or utilize the existing ones provided by Grafana.
+
+
+
+. Dashboards can be personalized according to specific monitoring and visualization
+needs.
+
+
+
+· Grafana provides flexibility in adjusting visualizations, making it a popular tool for system
+monitoring and analytics.
+
+
+
+Accessing Grafana
+
+. By default, Grafana services in Kubernetes are exposed using ClusterIP, restricting access
+to within the cluster.
+
+. To allow external access, the service type needs to be changed to LoadBalancer.
+
+. Once exposed externally, Grafana can be accessed using the LoadBalancer DNS on port
+80.
+
+Logging into Grafana
+
+. After accessing Grafana, users can log in using the default credentials (admin and prom-
+operator).
+
+
+
+. Once logged in, they can explore various options such as the home page and perform
+searches to monitor specific Kubernetes resources.
+
+
+
+Searchable Dashboards
+
+· Grafana provides several pre-built dashboards for monitoring, including:
+
+o Kubernetes / Compute Resources / Multi-Cluster
+o Kubernetes / API server
+
+Node Exporter / UES Method / Cluster
+
+
+
+These dashboards offer insight into system resources and performance metrics within
+Kubernetes environments.
+
+Helm Overview
+
+
+
+· Helm is used to manage Grafana and other deployments in Kubernetes.
+· Users can view added repositories and existing deployments using Helm.
+· Helm also enables the uninstallation of deployments, including the Grafana and
+Prometheus services, if needed.
