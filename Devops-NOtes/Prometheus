@@ -62,10 +62,30 @@ Explore -- > Label filters -- > jobs=varlogs -- > run query
 
 thanks all
 
+=========================================================================================================
 
+Prometheus
 
+Prometheus monitors, collects and send monitoring data to Grafand
 
+- Prometheus is an open source systems monitoring tool
+- Prometheus collects and stores the metrics data as time series data
+- Prometheus scrapes targets (Goes to nodes and collects data) (Pull mechanism)
+- PromQL is language to fire query in pod through CLI or browser to get info from Prometheus
+- Service Discovery monitors default services (K8S monitoring is default)
+- Exporters(agents) helps to monitor non default services
+- Prometheus can send alerts to the Alert manager.
+- Instead of Alert manager, we are going to use Grafana. (Alert manager is default feature of Prometheus)
+- Prometheus runs on port 9090 and Alert Manager runs on 9093
 
+Grafana will display that data in beautiful graphs.
 
-welcome
-abcd
+Install helm :-
+
+- sudo su -
+- yum install git -y
+(Git is not required for Helm itself, it's necessary for installing plugins or working with Helm repositories that use Git)
+- curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+- chmod 700 get_helm.sh
+- 1s
+- ./get_helm.sh
