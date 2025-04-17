@@ -1,0 +1,28 @@
+terraform import
+want to import a grafana resource by terraform that was created manually 
+
+step:1
+
+import {
+  to = aws_grafana_workspace.example    // block is only supported starting in Terraform v1.5.0
+  id = "g-2054c75a02"
+}
+
+terraform plan -generate-config-out=generated_resource.tf
+
+terraform import aws_grafana_workspace.example <grafana_id>
+============================================================================
+step1
+resource "aws_grafana_workspace" "example" {
+  # Leave empty for now, just define the type and name
+}
+
+terraform init
+
+terraform import aws_grafana_workspace.example g-2054c75a02 
+if that is in module then use below
+
+terraform show > imported.txt  we get resource copy and paste in .tf
+terraform import module.yace.aws_grafana_workspace.grafana_observability g-5967d394d0
+
+
