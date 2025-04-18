@@ -25,5 +25,6 @@ if that is in module then use below
 terraform show > imported.txt  we get resource copy and paste in .tf
 
  terraform import module.yace-adot.aws_grafana_workspace.grafana_observability g-5967d394d0  --> worked
+terraform import module.yace-adot.aws_prometheus_workspace.prometheus_observability ws-74a0d177-6431-470a-be40-b3bfd7d14610
 
 
