@@ -23,6 +23,7 @@ terraform import aws_grafana_workspace.example g-2054c75a02
 if that is in module then use below
 
 terraform show > imported.txt  we get resource copy and paste in .tf
-terraform import module.yace.aws_grafana_workspace.grafana_observability g-5967d394d0
+
+ terraform import module.yace-adot.aws_grafana_workspace.grafana_observability g-5967d394d0  --> worked
 
 
