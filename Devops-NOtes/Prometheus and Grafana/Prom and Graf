@@ -1,0 +1,10 @@
+DevOps Shacks
+
+Datasources--> get data from application which we want to analyze
+fetching done by Data sources
+1. Prometheus--> time series database--> ex: fetch data in certain interval of time
+2. LOKI  --> fetches logs from our application 
+3.INFLUX DB-->  time series database---> better version of prometheus 
+
+data on server fetched by Datasource--> pass to Grafana--> Grafana will use that data to
+create chart? proper visuslization
