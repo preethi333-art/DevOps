@@ -1,0 +1,25 @@
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Run stage
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+CMD ["java", "-jar", "app.jar"]
+
+===============================
+
+# Use the official OpenJDK image from the Docker Hub
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the JAR file into the container
+COPY app.jar .
+
+# Run the application
+CMD ["java", "-jar", "app.jar"]
