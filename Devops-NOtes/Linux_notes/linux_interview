@@ -300,6 +300,20 @@ Would you like **detailed explanations** for any of these? 🚀
 
 3. *Process Monitoring and Optimization:* 💡
  • *Scenario* : A server is experiencing high CPU usage, and the application performance is degraded. How would you identify the root cause and optimize the processes?
+# Check high CPU usage
+top
+
+# List top CPU-consuming processes
+ps -eo pid,cmd,%cpu --sort=-%cpu | head -5
+
+# Trace a specific process (e.g., PID 1234)
+sudo strace -p 1234
+
+# For Java apps: get thread dump
+jstack 1234 | less
+
+# Kill or restart runaway process
+sudo kill -9 <pid>
 
 4. *User Management and Permissions:* 💡
  • *Scenario* : A user is unable to access a specific directory even though they belong to the correct group. How would you troubleshoot and resolve this permission issue?
