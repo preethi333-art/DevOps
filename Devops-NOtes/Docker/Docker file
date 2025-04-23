@@ -23,3 +23,64 @@ COPY app.jar .
 
 # Run the application
 CMD ["java", "-jar", "app.jar"]
+
+
+
+
+
+
+
+
+
+Great, Preethi! Here are some commonly asked **Docker interview questions** (ranging from beginner to intermediate) that can help you prepare for your Capgemini interview:
+
+---
+
+### 🔹 **Basic Docker Questions**
+1. What is Docker, and how is it different from a virtual machine?
+2. What is a Docker image vs a Docker container?
+3. How do you create a Docker image?
+4. What is the purpose of the `Dockerfile`?
+5. How do you run a container in the background?
+6. How do you check running containers? How to stop one?
+7. How can you persist data in Docker?
+
+---
+
+### 🔹 **Intermediate-Level Questions**
+8. What is the difference between `COPY` and `ADD` in a Dockerfile?
+9. How do you expose ports in Docker?
+10. What is a Docker volume? How do you mount one?
+11. How do you share environment variables with a Docker container?
+12. How do you update a running container?
+13. Explain the use of Docker Compose.
+14. How do you reduce Docker image size?
+15. How would you debug a failing Docker container?
+
+---
+
+### 🔹 **DevOps-Focused Questions**
+16. How is Docker used in CI/CD pipelines?
+17. How do you use Docker in production securely?
+18. Explain a scenario where Docker caused an issue and how you resolved it.
+19. How would you handle Docker image versioning?
+20. What’s the difference between `ENTRYPOINT` and `CMD`?
+
+---
+
+### 🔹 Quick Command Questions
+- `docker ps -a` — what does it do?
+- `docker exec` vs `docker run`?
+- How do you clean up unused images/containers?
+- How to inspect logs from a container?
+- What does `--network` flag do?
+
+---
+
+Let me know if you want **answers** or **a mock interview script** for practice! 💪
+
+
+docker best practices
+1. the Dockerfile in empty directory since docker may send all files in current dir to deamon
+2. multistage build
+3. in dockerfile create, Use a non-root user in your Dockerfile
