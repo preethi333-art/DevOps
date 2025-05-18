@@ -76,6 +76,10 @@ Great, Preethi! Here are some commonly asked **Docker interview questions** (ran
 - What does `--network` flag do?
 
 ---
+Docker Drawbacks
+Docker deamon  runs as a root user
+
+
 
 Let me know if you want **answers** or **a mock interview script** for practice! 💪
 
