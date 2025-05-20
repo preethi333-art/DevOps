@@ -208,3 +208,6 @@ for (int i = 0; i < retries; i++) {
 ---
 
 Would you like a **ready-to-use Jenkinsfile template** with all of these techniques applied?
+
+
+https://github.com/gashok13193/DevOps-Docs/blob/main/Real%20Time%20Scenario%20Questions/Jenkins%20and%20Git.md
