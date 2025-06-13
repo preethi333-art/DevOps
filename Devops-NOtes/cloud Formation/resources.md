@@ -29,15 +29,16 @@ Resources:
 
 ## 🧠 Key Concepts
 
-| Concept                 | Description                                                  |
-| ----------------------- | ------------------------------------------------------------ |
-| **Logical ID**          | Name used within the template (e.g., `MyS3Bucket`)           |
-| **Type**                | Resource type using `AWS::Service::Resource` format          |
-| **Properties**          | Configuration for the resource (depends on the type)         |
-| **DependsOn**           | Explicitly specify resource creation order                   |
-| **DeletionPolicy**      | Preserve or back up resources on stack deletion              |
-| **Metadata**            | Extra data about the resource (not used by AWS directly)     |
-| **UpdateReplacePolicy** | Behavior when the resource is updated (retain, delete, etc.) |
+| **Concept**             | **Description**                                                                                                                                                                                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Logical ID**          | A unique name within the template that identifies the resource. It's how other parts of the template refer to the resource.<br>**Example**: `MyS3Bucket`.                                                                                             |
+| **Type**                | Specifies the AWS resource type using the format `AWS::Service::ResourceType`. This determines what kind of AWS resource will be created.<br>**Example**: `AWS::S3::Bucket`.                                                                          |
+| **Properties**          | Key-value pairs that define the resource's configuration. The set of valid properties depends on the resource type.<br>**Example**: For an S3 bucket, `BucketName`, `VersioningConfiguration`, etc.                                                   |
+| **DependsOn**           | Specifies an explicit dependency between resources, ensuring that the dependent resource is created only after the one it depends on.<br>**Example**: Make sure an S3 Bucket is created before applying its BucketPolicy.                             |
+| **DeletionPolicy**      | Controls the behavior of the resource when the stack is deleted. Options include `Delete` (default), `Retain`, and `Snapshot` (for supported resources like RDS or EBS).<br>**Use Case**: Retain an S3 bucket even if the stack is deleted.           |
+| **Metadata**            | Provides additional information about the resource that can be used by tools or third-party systems. CloudFormation itself does not use this data directly.<br>**Example**: Add a version label or documentation notes.                               |
+| **UpdateReplacePolicy** | Defines what happens to the resource when it's updated and must be replaced. Similar to `DeletionPolicy`, options include `Delete`, `Retain`, and `Snapshot`.<br>**Use Case**: Retain a database volume if its instance is replaced during an update. |
+
 
 ---
 
