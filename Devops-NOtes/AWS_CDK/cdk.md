@@ -8,7 +8,7 @@
 2. cd <project-name>
 3. cdk init app --language python
 4. cd .venv\Scripts
-5. .\Activate.ps1
+5. .\Activate.ps1 or source activate for bash
 6. cd ..
 7. pip install -r requirements.txt
 
