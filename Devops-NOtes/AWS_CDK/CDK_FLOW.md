@@ -1,4 +1,4 @@
-Sure! Here's a high-level overview of **AWS CDK (Cloud Development Kit)** concepts, explained simply:
+
 
 ---
 
