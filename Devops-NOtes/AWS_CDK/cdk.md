@@ -1,7 +1,12 @@
 ## Install AWS CDK in Windows (npm is pre-requisites)
 1. npm install -g aws-cdk
 2. aws configure (AWS CLI)
-2. cdk bootstrap aws://<AccountNumber>/<Region>
+2. cdk bootstrap aws://AccountNumber/Region
+3. 
+Bootstraping means
+
+Preparing an AWS region in your AWS account for CDK deployments by creating necessary resources, like S3 buckets and IAM roles.
+The 'cdk bootstrap' command is used to bootstrap a CDK environment.
 
 ## Commands AWS CDK ( Run venv)
 1. mkdir <project-name>
