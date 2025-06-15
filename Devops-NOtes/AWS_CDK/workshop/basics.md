@@ -1,4 +1,4 @@
-dk init
+cdk init
 The cdk init command creates a structure of files and folders within an empty directory to help organize the source code for your CDK app. This structure of files and folders is called your CDK project
 
 cdk init sample-app --language python
