@@ -57,3 +57,72 @@ class MySampleAppStack(Stack):
 
         CfnOutput(self, 'DbEndpoint',
                   value=db_instance.db_instance_endpoint_address)
+
+
+
+Here’s a clear and concise **summary** of the lecture you shared, ideal for notes or review purposes:
+
+---
+
+### **Lecture Summary: Connecting a Web Server to an RDS DB Using AWS CDK (Python)**
+
+#### **1. RDS DB Instance Setup**
+
+* Imported `aws_cdk.aws_rds` as `rds`.
+* Created a MariaDB instance using the L2 construct `rds.DatabaseInstance`.
+* Set the DB engine using `DatabaseInstanceEngine.MARIADB`.
+* Placed the DB instance in **private isolated subnets** within the VPC.
+* Reused `vpc` and `vpc_subnets` from the web server config.
+* Chose `t2.micro` as the instance type.
+* Set `removal_policy=RemovalPolicy.DESTROY` to auto-delete on stack deletion (not for production).
+
+#### **2. Connecting Web Server to DB**
+
+* Allowed MySQL traffic **from the web server to the DB** using:
+
+  * `db_instance.connections.allow_default_port_from(web_server, "Allow MySQL access from the web server")`.
+  * (Alternate approach shown: `web_server.connections.allow_to_default_port(db_instance)` — optional).
+* These CDK methods configure **security group rules** automatically, without explicitly referencing them.
+
+#### **3. User Data Update**
+
+* Installed **MySQL client** on the web server via `add_user_data("yum install mysql -y")`.
+* Because `user_data_causes_replacement=True`, any user data change triggers **instance replacement**.
+
+#### **4. SSH Access Setup**
+
+* Enabled **SSH (port 22)** from the Internet to the web server for testing purposes.
+
+#### **5. Outputs**
+
+* Added a CloudFormation output for the **DB endpoint** using:
+
+  ```python
+  CfnOutput(self, "DbEndpoint", value=db_instance.db_instance_endpoint_address)
+  ```
+
+#### **6. Post-Deployment Testing**
+
+* Connected to the EC2 instance using **EC2 Instance Connect** (no key pair needed).
+* Used **Secrets Manager** to retrieve DB credentials.
+* Connected to RDS using MySQL client:
+
+  ```bash
+  mysql -h <db-endpoint> -u admin -p
+  ```
+* Ran SQL command: `SHOW DATABASES;` to confirm connection.
+
+---
+
+### **Key Concepts Demonstrated**
+
+* Use of **L2 constructs** for RDS and VPC resources.
+* CDK’s **`connections` interface** simplifies security group management.
+* Leveraging **Secrets Manager** for DB credential management (secure by default).
+* Importance of **isolated subnets** for databases in production.
+* Demonstrated **user data updates**, **EC2 replacements**, and **stack outputs**.
+
+---
+
+Let me know if you want this turned into a diagram, PDF, or formatted as a study guide!
+                  
