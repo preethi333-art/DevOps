@@ -8,6 +8,7 @@ Here are concise notes summarizing the key points from your detailed explanation
 - **GitHub Actions** is a built-in CI/CD (Continuous Integration/Continuous Deployment) tool in GitHub.
 - Automates software development workflows (build, test, deploy, etc.).
 - Triggered by events like code commits, pull requests, or scheduled times.
+- Supports custom and community-contributed actions
 
 ### 2. **Core Concepts**
 - **Workflow**: Defined in YAML files (`.github/workflows/your-workflow.yml`).
