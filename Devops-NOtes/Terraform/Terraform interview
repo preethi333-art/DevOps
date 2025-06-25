@@ -1,5 +1,6 @@
 1) What if your state file is deleted?
-Terraform loses track of infrastructure, leading to duplicates. Recovery needs manual imports or backups. Enable S3 versioning.
+Terraform loses track of infrastructure, leading to duplicates. Recovery needs manual imports or backups.
+Enable S3 versioning.
 
 2) How to refactor without downtime?
 Use "terraform state mv" for renaming. Control changes with targeted applies and split into non-destructive PRs.
@@ -38,10 +39,13 @@ Terraform treats this as destruction and recreation. Use "terraform state mv" to
 
 ==============================================================================================
 
-The commands `terraform apply -refresh-only` and `terraform refresh` both deal with **refreshing the state** to reflect the actual state of the infrastructure, but they are used in slightly different contexts and have different effects.
+The commands `terraform apply -refresh-only` and `terraform refresh` both deal with **refreshing the state** 
+to reflect the actual state of the infrastructure, but they are used in slightly different contexts and have
+different effects.
 
 ### 1. **`terraform refresh`**:
-- **Purpose**: The `terraform refresh` command is specifically designed to update the **Terraform state file** with the latest information from the actual infrastructure, ensuring that Terraform's state file is synchronized with the current state of the resources.
+- **Purpose**: The `terraform refresh` command is specifically designed to update the **Terraform state file** 
+with the latest information from the actual infrastructure, ensuring that Terraform's state file is synchronized with the current state of the resources.
   
 - **How it works**: This command will retrieve the latest information for each resource from the provider (e.g., AWS, Azure) and update the state file accordingly. It does **not** apply any changes to the infrastructure; it only updates the state.
 
@@ -51,13 +55,16 @@ The commands `terraform apply -refresh-only` and `terraform refresh` both deal w
   ```
 
 - **When to use**: 
-  - If you want to update the Terraform state to reflect changes that have occurred outside of Terraform (e.g., manual modifications, updates through another tool).
+  - If you want to update the Terraform state to reflect changes that have occurred outside of Terraform 
+(e.g., manual modifications, updates through another tool).
   - If you're unsure whether your Terraform state is up to date with the actual infrastructure.
 
 ---
 
 ### 2. **`terraform apply -refresh-only`**:
-- **Purpose**: The `terraform apply -refresh-only` command combines the functionality of `terraform refresh` with the **planning** phase of `terraform apply`. It refreshes the state and then outputs what changes would be applied if you were to run a full `apply`. However, it does **not** actually make any changes to the infrastructure.
+- **Purpose**: The `terraform apply -refresh-only` command combines the functionality of `terraform refresh`
+with the **planning** phase of `terraform apply`. It refreshes the state and then outputs what changes
+would be applied if you were to run a full `apply`. However, it does **not** actually make any changes to the infrastructure.
 
 - **How it works**: This command first runs a **state refresh** (like `terraform refresh`) to synchronize the state file, and then it shows what changes would be made if you ran `terraform apply` — but **no resources are modified**.
 
@@ -118,7 +125,8 @@ However, if you want to prevent this from happening, or handle it in a more cont
      }
    }
    ```
-   With this setting, even if you remove the `aws_s3_bucket` definition from the configuration, Terraform will **not destroy** the resource during the apply. The resource will remain in your infrastructure.
+   With this setting, even if you remove the `aws_s3_bucket` definition from the configuration,
+Terraform will **not destroy** the resource during the apply. The resource will remain in your infrastructure.
 
 ---
 
