@@ -1,0 +1,372 @@
+Below are **clean, neat, and very beginner‑friendly notes** prepared from this video.  
+The content is **simplified**, **well‑structured**, and **easy to revise**.
+
+***
+
+# 🐍 **Python Basics – First Hands‑On with IDLE**
+
+## **1. Starting Python Programming**
+
+*   Till now, we learned:
+    *   What is Python
+    *   How to install Python
+*   Now we start **actual coding**.
+*   For this video, we will use **Python IDLE** (not PyCharm).
+*   IDLE gives a **prompt** (`>>>`) where we can type Python code directly.
+
+***
+
+## **2. Why Do We Write Code?**
+
+*   Computers help us do tasks like:
+    *   Sending emails or messages
+    *   Setting alarms (Siri, Google Assistant)
+    *   Automating work
+*   But computers **do not understand English**.
+*   Computers understand **binary language (0s and 1s)**.
+*   Programming languages (like Python) act as a **bridge**:
+    *   Human → Python Code → Binary → Computer
+
+***
+
+## **3. Python as a Programming Language**
+
+*   Python is a **high‑level language**:
+    *   Easier than binary
+    *   Easier than low‑level languages
+*   Python code is converted into binary using a **Python Interpreter**.
+
+***
+
+# 🔢 **4. Arithmetic Operations in Python**
+
+Python supports basic arithmetic just like mathematics.
+
+### ✅ Addition
+
+```python
+2 + 3
+```
+
+Output:
+
+```text
+5
+```
+
+### ✅ Subtraction
+
+```python
+9 - 8
+```
+
+Output:
+
+```text
+1
+```
+
+### ✅ Multiplication
+
+```python
+4 * 6
+```
+
+Output:
+
+```text
+24
+```
+
+### ✅ Division
+
+```python
+8 / 4
+```
+
+Output:
+
+```text
+2.0
+```
+
+***
+
+## **5. Integer vs Float**
+
+*   **Integer** → Whole numbers (1, 2, 10)
+*   **Float** → Decimal numbers (2.5, 3.0)
+
+Example:
+
+```python
+5 / 2
+```
+
+Output:
+
+```text
+2.5
+```
+
+Python gives **float result** for division to keep accuracy.
+
+***
+
+## **6. Integer (Floor) Division**
+
+*   If you want **only the whole number part**, use `//`
+
+```python
+5 // 2
+```
+
+Output:
+
+```text
+2
+```
+
+✅ Called **integer division** or **floor division**
+
+***
+
+## **7. Multiple Operations**
+
+You can combine operations:
+
+```python
+8 + 9 - 10
+```
+
+✅ Python follows grammar rules  
+❌ Wrong grammar → `SyntaxError`
+
+***
+
+## **8. Using Brackets (BODMAS Rule)**
+
+Without brackets:
+
+```python
+8 + 2 * 3
+```
+
+Output:
+
+```text
+14
+```
+
+With brackets:
+
+```python
+(8 + 2) * 3
+```
+
+Output:
+
+```text
+30
+```
+
+✅ Brackets are solved first.
+
+***
+
+## **9. Power / Exponent Operator**
+
+*   Use `**` for power
+
+```python
+2 ** 3
+```
+
+Output:
+
+```text
+8
+```
+
+✅ Means: 2 raised to the power 3
+
+***
+
+## **10. Modulus Operator (Remainder)**
+
+*   `%` gives **remainder**
+
+```python
+10 % 3
+```
+
+Output:
+
+```text
+1
+```
+
+✅ Useful to check even/odd numbers.
+
+***
+
+# 🔤 **11. Data Types: String**
+
+### What is a String?
+
+*   A string is a **collection of characters**
+*   Examples:
+    *   `"Navin"`
+    *   `"Python"`
+    *   `"YouTube"`
+
+***
+
+## **12. Writing Strings**
+
+Strings must be inside:
+
+*   Single quotes `' '` or
+*   Double quotes `" "`
+
+```python
+'Navin'
+```
+
+or
+
+```python
+"Navin"
+```
+
+***
+
+## **13. Using `print()` Function**
+
+*   `print()` is an **inbuilt function**
+*   Used to display output clearly
+
+```python
+print("Navin")
+```
+
+✅ Output:
+
+```text
+Navin
+```
+
+✅ Cleaner than just writing strings.
+
+***
+
+## **14. Quotes Problem & Solution**
+
+### ❌ Problem:
+
+```python
+print('Navin's laptop')
+```
+
+Error due to `'`
+
+### ✅ Solution 1: Use double quotes
+
+```python
+print("Navin's laptop")
+```
+
+### ✅ Solution 2: Escape character `\`
+
+```python
+print('Navin\'s laptop')
+```
+
+✅ `\` tells Python to **ignore special meaning**.
+
+***
+
+## **15. String Concatenation (Joining Strings)**
+
+```python
+'Navin' + 'Navin'
+```
+
+Output:
+
+```text
+NavinNavin
+```
+
+***
+
+## **16. String Repetition**
+
+```python
+'Navin' * 3
+```
+
+Output:
+
+```text
+NavinNavinNavin
+```
+
+✅ Python allows strings × numbers.
+
+***
+
+## **17. Escape Sequences**
+
+*   `\n` → New line
+
+```python
+print("C:\\docs\\Navin")
+```
+
+But:
+
+```python
+print("C:\docs\Navin")
+```
+
+❌ `\n` is treated as new line.
+
+***
+
+## **18. Raw Strings**
+
+To print text **exactly as it is**, use `r`
+
+```python
+print(r"C:\docs\Navin")
+```
+
+✅ `r` means **raw string**  
+✅ No special processing
+
+***
+
+# ✅ **Final Summary**
+
+*   Python is easy and fun
+*   Supports arithmetic, strings, and operators
+*   Uses simple grammar rules
+*   IDLE helps beginners experiment quickly
+
+***
+
+## 🔜 **Next Topic**
+
+👉 Variables in Python  
+👉 Storing values and using them
+
+***
+
+If you want:
+✅ **Short exam notes**
+✅ **Practice questions**
+✅ **MCQs**
+✅ **Step‑by‑step exercises**
+
+Just tell me 😊
