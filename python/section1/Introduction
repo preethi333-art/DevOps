@@ -1,0 +1,151 @@
+Introduction to Python – Clear Notes
+1. What is Python?
+
+Python is a programming language.
+It is:
+
+Interpreted (code is executed line by line)
+High-level (easy to read and write)
+Object-oriented
+
+
+Python also supports:
+
+Procedural programming
+Object-Oriented Programming (OOP)
+
+
+You can use Python in different ways depending on your purpose.
+
+
+2. Why is Python So Popular?
+Python is one of the fastest-growing programming languages because of:
+
+Large number of developers
+Huge collection of libraries
+Many companies using it
+Wide range of applications
+
+Areas Where Python Is Used:
+
+Machine Learning
+Artificial Intelligence (AI)
+Web Development
+GUI (Graphical User Interface) Development
+Data Science
+Automation and Scripting
+
+Because of this versatility, Python is called a General-Purpose Programming Language.
+
+3. Python vs Other Languages
+
+Languages like C, C++, Java, JavaScript already exist.
+Python is not a new language:
+
+Python was created in 1989
+Java was created in 1995
+
+
+Initially, Java dominated the enterprise market.
+Python was mainly used for:
+
+Learning programming
+Simple scripting tasks
+
+
+
+
+4. Rise of Python in AI & Machine Learning
+
+With the growth of AI and Machine Learning, Python became popular again.
+Research scientists prefer Python because:
+
+They don’t want to spend much time learning complex syntax.
+Python is simple and readable.
+
+
+Python is easier than C, C++, and Java.
+
+That is why:
+
+Schools and colleges now teach Python as a first language.
+
+
+5. Who Uses Python?
+Python is used by many top companies, including:
+
+Google
+YouTube
+Dropbox
+Reddit
+
+
+Example:
+
+
+Google uses Python for several internal features.
+Reddit is largely written in Python.
+
+
+6. Why is Python Called “Python”?
+
+The name Python does not come from the snake.
+The creator of Python, Guido van Rossum, was a fan of:
+
+Monty Python’s Flying Circus (a British comedy show).
+
+
+He named the language Python based on this inspiration.
+
+
+7. Is Python Easy to Learn?
+
+Yes, Python is one of the easiest programming languages.
+Suitable for:
+
+Beginners
+Non-technical backgrounds
+Children
+
+
+Even someone who has never written code before can start with Python.
+
+
+8. Python Versions
+Python has multiple versions:
+
+Python 1.x
+Python 2.x
+Python 3.x
+
+Python 2 vs Python 3:
+
+Python 3 is not backward compatible with Python 2.
+Because of this, Python 2 continued to be used for many years.
+Python 2 had support until 2020.
+
+Which Version Should You Learn?
+✅ Python 3.x
+
+It is the latest version.
+Has more features.
+Actively maintained and widely used.
+
+
+9. What’s Next in the Series?
+
+Installation of Python
+Working with Python tools
+Hands-on coding examples
+
+
+10. Final Notes
+
+Python is powerful, simple, and versatile.
+It is ideal for beginners and professionals alike.
+Learning Python opens doors to modern technologies like AI, ML, and Web Development.
+
+
+✅ Summary
+
+Python is easy to learn, powerful to use, and flexible for many applications — making it one of the best languages to start your programming journey.
