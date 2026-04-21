@@ -470,3 +470,214 @@ Ask **ONE QUESTION ONLY**:
 
 Just tell me 👍
 
+
+EXAMPLE
+-------
+
+Good question. Your code is **almost correct**, but there is **one important mistake** and a couple of **conceptual issues**.  
+I’ll explain **clearly**, then show the **correct version**, and finally explain **why**.
+
+***
+
+## ✅ Your Code (As Given)
+
+```python
+class Student:
+    def school(cls):
+        print("This is a school: Aditya")
+
+    def __init__(self, m1, m2, m3):
+        self.m1 = m1
+        self.m2 = m2
+        self.m3 = m3
+
+    def avg(self):
+        return (self.m1 + self.m2 + self.m3) / 3
+
+    @staticmethod
+    def sample():
+        print("This is a sample method")
+    
+S1 = Student(34, 56, 78)
+S2 = Student(45, 67, 89) 
+
+print(Student.school())
+print(S1.avg())
+print(Student.sample())
+```
+
+***
+
+## ❌ Problem 1: `school()` is NOT a class method
+
+### Your method:
+
+```python
+def school(cls):
+```
+
+This **LOOKS** like a class method because you used `cls`,  
+but Python does **not care about the name** `cls`.
+
+➡️ Python only treats it as a **normal instance method**, because:
+
+*   There is **no `@classmethod` decorator**
+
+So internally Python thinks:
+
+```python
+Student.school()  # ❌ missing argument
+```
+
+### What actually happens?
+
+```text
+TypeError: school() missing 1 required positional argument
+```
+
+***
+
+## ✅ Correct Way to Write `school()` as a Class Method
+
+```python
+class Student:
+    @classmethod
+    def school(cls):
+        print("This is a school: Aditya")
+```
+
+✅ Now Python knows:
+
+*   This method belongs to **class**
+*   `cls` will automatically receive `Student`
+
+***
+
+## ❌ Problem 2: Using `print(Student.school())`
+
+Your `school()` method **prints** something but does **not return** anything.
+
+So:
+
+```python
+print(Student.school())
+```
+
+Output will be:
+
+```text
+This is a school: Aditya
+None
+```
+
+Because:
+
+*   `print()` inside method → prints message
+*   No `return` → returns `None`
+
+***
+
+## ✅ Better Practice: Either PRINT or RETURN (not both)
+
+### Option 1: Return value (recommended)
+
+```python
+@classmethod
+def school(cls):
+    return "This is a school: Aditya"
+```
+
+Then:
+
+```python
+print(Student.school())
+```
+
+✅ Clean output  
+✅ Reusable method
+
+***
+
+## ✅ Problem 3: `sample()` static method is correct ✅
+
+```python
+@staticmethod
+def sample():
+    print("This is a sample method")
+```
+
+This is **perfect** because:
+
+*   No `self`
+*   No `cls`
+*   No class or instance data
+
+Calling:
+
+```python
+Student.sample()
+```
+
+✅ Correct  
+✅ Best practice
+
+***
+
+## ✅ Fully Corrected & CLEAN Version
+
+```python
+class Student:
+
+    @classmethod
+    def school(cls):
+        return "This is a school: Aditya"
+
+    def __init__(self, m1, m2, m3):
+        self.m1 = m1
+        self.m2 = m2
+        self.m3 = m3
+
+    def avg(self):
+        return (self.m1 + self.m2 + self.m3) / 3
+
+    @staticmethod
+    def sample():
+        return "This is a sample method"
+
+
+S1 = Student(34, 56, 78)
+S2 = Student(45, 67, 89)
+
+print(Student.school())
+print(S1.avg())
+print(Student.sample())
+```
+
+***
+
+## 🧠 Summary (VERY IMPORTANT)
+
+### Key Rules to Remember
+
+| Method Type | Must Have | Decorator         | Called Using |
+| ----------- | --------- | ----------------- | ------------ |
+| Instance    | `self`    | ❌                 | Object       |
+| Class       | `cls`     | ✅ `@classmethod`  | Class        |
+| Static      | none      | ✅ `@staticmethod` | Class        |
+
+***
+
+## 🔑 Interview‑Perfect Explanation
+
+> **“Using `cls` alone does not make a class method; the `@classmethod` decorator is mandatory.”**
+
+***
+
+If you want next, I can:
+✅ Show memory flow (how Python passes `self/cls`)  
+✅ Explain why decorators are required  
+✅ Give interview trick questions  
+✅ Explain error messages line by line
+
+Just tell me 👍
+
