@@ -23,6 +23,34 @@ CVCS: Centralized version control system
 we can store code on single repos.
 ex: Svn
 
+Centralized VCS
+Edit file → Commit directly to server
+Git (Distributed)
+Edit file
+↓
+Commit locally
+↓
+Push to remote repository
+Why Git is called Distributed
+
+When you clone a Git repository:
+
+git clone <repo-url>
+
+You get:
+
+All files
+All commits
+All branches
+Entire history
+
+on your machine.
+
+Interview answer
+
+Centralized VCS stores code in a single central repository, while Distributed VCS gives every developer a complete copy of the repository and its history.
+Git is a Distributed Version Control System, which enables faster operations, offline work, and better fault tolerance.
+
 STAGES OF GIT:
 Working directory: we write our code here.
 staging area: we track our code here.
