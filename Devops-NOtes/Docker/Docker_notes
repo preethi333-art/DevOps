@@ -2,6 +2,11 @@ MONOLITHIC: multiple services are deployed on single server with single database
 
 MICRO SERVICES: multiple services are deployed on multiple servers with multiple database.
 
+which one best
+in monolithic
+if one sevice have bug we will stop server entire all service are down 
+in microservice we stop one server only that service is down
+
 CONTAINERS:
 its same as a server/vm.
 it will not have any operating system.
