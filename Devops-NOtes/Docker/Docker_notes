@@ -7,6 +7,8 @@ in monolithic
 if one sevice have bug we will stop server entire all service are down 
 in microservice we stop one server only that service is down
 
+if multiple servers what about cost?
+
 CONTAINERS:
 its same as a server/vm.
 it will not have any operating system.
