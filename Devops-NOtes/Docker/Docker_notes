@@ -33,6 +33,8 @@ os level of virtualization.
 
 VIRTUALIZATION:
 able to create resouce with our hardware properties.
+Problem: Since multiple virtual machines share the same physical resources, 
+they may compete for CPU, RAM, and storage, which can reduce performance.
 
 ARCHITECTURE & COMPONENTS:
 client: it will interact with user
