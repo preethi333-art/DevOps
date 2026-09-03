@@ -37,20 +37,45 @@ Problem: Since multiple virtual machines share the same physical resources,
 they may compete for CPU, RAM, and storage, which can reduce performance.
 
 ARCHITECTURE & COMPONENTS:
-client: it will interact with user
+client: it will interact with user( The Docker Client is where we give commands to Docker.)
 user gives commands and it will be executed by docker client
 
-daemon: manages the docker components(images, containers, volumes)
+daemon: manages the docker components(images, containers, volumes)( inside docker host we have)
+The Docker Daemon (dockerd) is the main background service.
+It:
+Creates containers
+Runs containers
+Manages images
+Manages networks and storage
+Think of it as the manager that does the actual work.
 
-host: where we install docker (ex: linux, windows, macos)
+Image: An image is a template used to create containers.
+Docker Container 🚢 A container is a running instance of an image.
 
-Registry: manages the images.
+Docker host: where we install docker (ex: linux, windows, macos)
+
+Registry: manages the images.( store images)
+
+
+
+
 
 ARCHITECTURE OF DOCKER:
 yum install docker -y    #client
 systemctl start docker	 #client,Engine
 systemctl status docker
 
+docker version- to check dodker installed or not
+systemctl status docker
+systemctl start docker once we  start docker then we get server details server means docker host
+if we have docker host then only we create docker images n containers
+
+Docker Client gives commands → Docker Daemon performs the work
+→ Images are used to create Containers → Registry stores Images.
+
+docker run -it --name netflix -p 80:81 netflix:v1
+-p means publish
+-d detach 
 
 COMMANDS:
 docker pull ubuntu	: pull ubuntu image
@@ -58,6 +83,7 @@ docker images		: to see list of images
 docker run -it --name cont1 ubuntu : to create a container
 -it (interactive) - to go inside a container
 cat /etc/os-release	: to see os flavour
+
 
 
 apt update -y	: to update 
