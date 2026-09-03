@@ -1,0 +1,52 @@
+Docker Image
+
+In Docker, an image is a ready-made package/template that contains everything needed to run an application.
+
+It usually contains:
+
+Application code
+Libraries/dependencies
+Required tools
+Basic operating system files
+Simple example
+
+Suppose you have a Python application.
+
+You create a Docker image containing:
+
+Python
+   ↓
+Required libraries
+   ↓
+Your application
+
+
+Then you use that image to create a Docker container.
+
+Docker Image
+     ↓
+     ↓
+ ┌───────────┐
+ │ Container │
+ └───────────┘
+
+Easy way to remember
+
+Image = Blueprint 📋
+Container = Running thing created from the blueprint
+
+For example:
+
+Python image → Create container → Run Python application
+
+So, Docker image is a template used to create containers.
+
+
+as we use Hypervisor in virtualization for servers  similarly we use Docker to createcontainers
+
+Bedfore docker faced issue dev system working but not in testing
+
+Docker : contianeraization tool
+containerization process of packing the app along with dependencies 
+so that the code work in any env  --> image
+
