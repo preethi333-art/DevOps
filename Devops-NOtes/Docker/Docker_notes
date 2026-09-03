@@ -60,6 +60,24 @@ Registry: manages the images.( store images)
 Docker Client gives commands → Docker Daemon performs the work
 → Images are used to create Containers → Registry stores Images.
 
+docker run nginx
+       ↓
+Check local image
+       ↓
+Image exists?
+   /        \
+ YES        NO
+  |          |
+  |       Pull from
+  |      Docker Hub
+  |          |
+  └────┬─────┘
+       ↓
+Create Container
+       ↓
+Start Container
+
+
 
 
 ARCHITECTURE OF DOCKER:
@@ -77,6 +95,14 @@ if we have docker host then only we create docker images n containers
 docker run -it --name netflix -p 80:81 netflix:v1
 -p means publish
 -d detach 
+80: 81 --> host port: container port
+container port depends on image
+if nginx--> 80
+if jenkins 8080
+if nexus -> 8081
+mysql --> 3306
+
+
 
 COMMANDS:
 docker pull ubuntu	: pull ubuntu image
@@ -84,6 +110,24 @@ docker images		: to see list of images
 docker run -it --name cont1 ubuntu : to create a container
 -it (interactive) - to go inside a container
 cat /etc/os-release	: to see os flavour
+===========================================================================================
+WEB server VS application server
+----------------------------------
+A web server primarily handles HTTP requests and serves static content, whereas 
+an application server executes business logic and interacts with databases and other
+services to generate dynamic responses
+Customer
+   |
+   v
+Receptionist --------> Web Server
+   |
+   v
+Kitchen -------------> Application Server
+   |
+   v
+Storage/Inventory ----> Database
+
+===================================================================================
 
 
 
@@ -107,6 +151,27 @@ docker pause cont_name	: to pause container
 docker unpause cont_name: to unpause container
 docker inspect cont_name: to get complete info of a container
 docker rm cont_name	: to delete a container
+we cannot remove a running container  docker stop c3 then docker rm c3
+without stop we can docker rm --f c3
+
+is it possible to create multiple containers through commands no may be in docker swarm
+
+is it possible to stop/start multiple containers -yes
+docker stop/start c1 c2 c3
+docker stop $(docker ps)  --> stop all running containers
+docker 
+
+can we delete 100 containers?yes
+docker rm $(docker ps -a)  --> remove all stopped and started containers
+
+we cannot remove a image when its in use
+
+remove images
+docker rmi $(docker images)
+
+is it possible to remove multiple containers -yes
+
+is it possible to remove all multiple containers -yes
 
 HISTORY:
    1  yum install docker -y
