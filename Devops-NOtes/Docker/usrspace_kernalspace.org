@@ -1,0 +1,363 @@
+Is Docker a kernel-space or user-space technology?
+
+Absolutely. Let's forget the complicated terms for a moment and understand Docker + user space + kernel space from the basics.
+
+User space = normal applications with limited privileges.
+
+Kernel space = operating-system code with high privileges that manages the machine's resources.
+
+1. First, what is the kernel?
+
+Think of your Linux machine like a company.
+
+You / Applications
+        ↓
+    User Space
+        ↓
+      Kernel
+        ↓
+    Hardware
+
+
+The kernel is the part of the operating system that directly manages the hardware.
+
+For example:
+
+CPU
+RAM
+Disk
+Network card
+Processes
+
+Your application normally doesn't directly control these things. It asks the kernel.
+
+2. Simple real-life example
+
+Suppose you run:
+
+ls
+
+
+ls is a user-space program.
+
+It wants to see files on the disk.
+
+It basically says to the kernel:
+
+"Hey kernel, give me the files in this directory."
+
+The kernel accesses the filesystem and gives the information back.
+
+          USER SPACE
+     ┌─────────────────┐
+     │       ls        │
+     └────────┬────────┘
+              │
+              │ system call
+              ↓
+          KERNEL SPACE
+     ┌─────────────────┐
+     │ Linux Kernel    │
+     │                 │
+     │ Filesystem      │
+     │ Disk management │
+     └────────┬────────┘
+              ↓
+          Hardware
+
+3. Where does Docker fit?
+
+Docker itself is primarily user-space software.
+
+When you run:
+
+docker run nginx
+
+
+the Docker command doesn't directly create a magical isolated machine.
+
+Instead, Docker asks the Linux kernel to provide isolation and resource control.
+
+USER SPACE
+────────────────────────────
+
+docker CLI
+     ↓
+dockerd
+     ↓
+containerd
+     ↓
+runc
+
+────────────────────────────
+KERNEL SPACE
+
+Linux Kernel
+     ↓
+CPU
+RAM
+Disk
+Network
+
+
+So Docker is basically saying:
+
+"Kernel, please create an isolated environment for this application."
+
+4. How does the kernel isolate containers?
+
+This is where namespaces come in.
+
+Imagine you have:
+
+Host Linux
+│
+├── Container A
+│
+└── Container B
+
+
+Both containers use the same Linux kernel.
+
+But Container A should not see everything happening in Container B.
+
+Linux namespaces provide this isolation.
+
+For example:
+
+Container A
+   ↓
+sees processes: 1, 2, 3...
+
+Container B
+   ↓
+sees processes: 1, 2, 3...
+
+
+They can both think they have their own process numbering, even though the host kernel is managing all of them.
+
+5. What about CPU and RAM?
+
+Suppose you have:
+
+Server
+CPU: 4 cores
+RAM: 8 GB
+
+
+You run two containers.
+
+Container A → max 2 GB RAM
+Container B → max 1 GB RAM
+
+
+Who actually enforces those limits?
+
+The Linux kernel, using cgroups.
+
+Docker tells the kernel:
+
+Container A can use up to 2 GB.
+
+Container B can use up to 1 GB.
+
+The kernel enforces those limits.
+
+So:
+
+Docker
+  ↓
+"Please limit this container to 2 GB"
+  ↓
+Linux Kernel
+  ↓
+Enforces the limit
+
+6. What about your overlay2?
+
+You asked about this earlier:
+
+/var/lib/docker/overlay2/...
+
+
+That's also connected to the Linux kernel.
+
+Docker uses OverlayFS, a Linux filesystem feature, to combine image layers.
+
+For example:
+
+nginx image
+
+Layer 1 → Ubuntu/base files
+Layer 2 → nginx
+Layer 3 → configuration
+
+
+Docker combines these layers so the container sees them as one filesystem.
+
+       Container
+           ↓
+       merged view
+           ↓
+       OverlayFS
+           ↓
+      Linux Kernel
+           ↓
+         Disk
+
+7. The most important concept
+
+Here's the thing you should remember:
+
+Docker does NOT have a separate kernel for every container.
+
+For example:
+
+             Linux Host
+        ┌──────────────────┐
+        │   Linux Kernel   │
+        │                  │
+        │  ┌────────────┐  │
+        │  │ Container A│  │
+        │  └────────────┘  │
+        │                  │
+        │  ┌────────────┐  │
+        │  │ Container B│  │
+        │  └────────────┘  │
+        └──────────────────┘
+
+
+Both containers share:
+
+Linux Kernel
+
+
+That's one of the major reasons containers are lightweight.
+
+8. Compare Docker with a VM
+
+This makes it much clearer.
+
+Virtual Machine
+
+A VM has its own operating system/kernel.
+
+Physical Server
+│
+├── Host OS
+│    └── Hypervisor
+│
+├── VM 1
+│    └── Guest OS
+│         └── Guest Kernel
+│
+└── VM 2
+     └── Guest OS
+          └── Guest Kernel
+
+
+So VM 1 and VM 2 have separate kernels.
+
+Docker
+
+Docker containers share the host kernel:
+
+Physical Server
+│
+└── Linux Host
+     │
+     └── Linux Kernel
+          │
+          ├── Container 1
+          ├── Container 2
+          └── Container 3
+
+
+That's why containers generally start much faster and use fewer resources than full VMs.
+
+9. One more important distinction
+
+You may hear people say:
+
+"Docker is running in the kernel."
+
+That's not quite correct.
+
+Docker's components such as:
+
+docker CLI
+dockerd
+containerd
+runc
+
+
+run in user space.
+
+They interact with the kernel to get things done.
+
+Think:
+
+Docker = Manager
+Kernel = Worker
+
+
+Docker says:
+
+"Create an isolated process."
+
+Kernel says:
+
+"Okay, I'll use namespaces."
+
+Docker says:
+
+"Limit it to 1 GB RAM."
+
+Kernel says:
+
+"Okay, I'll use cgroups."
+
+Docker says:
+
+"Give it this filesystem."
+
+Kernel says:
+
+"Okay, I'll use OverlayFS."
+
+10. Interview answer
+
+If an interviewer asks:
+
+"Is Docker a kernel-space or user-space technology?"
+
+A good answer is:
+
+"Docker itself runs in user space. It relies on Linux kernel features such as namespaces for isolation, cgroups for resource management, and OverlayFS for the container filesystem. Containers share the host's Linux kernel, unlike virtual machines which have their own guest kernels."
+
+Remember this diagram
+             USER SPACE
+┌─────────────────────────────────┐
+│ Docker CLI                       │
+│ Docker Daemon                    │
+│ containerd                       │
+│ runc                             │
+└────────────────┬────────────────┘
+                 │
+                 ↓
+             KERNEL SPACE
+┌─────────────────────────────────┐
+│ Linux Kernel                     │
+│                                 │
+│ Namespaces → Isolation           │
+│ Cgroups    → CPU/RAM limits      │
+│ OverlayFS   → Container storage  │
+│ Networking → Container network   │
+└────────────────┬────────────────┘
+                 ↓
+             HARDWARE
+
+
+One-line memory trick:
+
+🐳 Docker lives in user space; containers depend on the kernel.
