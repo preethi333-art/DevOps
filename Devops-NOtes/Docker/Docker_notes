@@ -151,15 +151,20 @@ docker pause cont_name	: to pause container
 docker unpause cont_name: to unpause container
 docker inspect cont_name: to get complete info of a container
 docker rm cont_name	: to delete a container
-we cannot remove a running container  docker stop c3 then docker rm c3
-without stop we can docker rm --f c3
+we cannot remove a running container  --> docker stop c3--> then docker rm c3
 
-is it possible to create multiple containers through commands no may be in docker swarm
+without stop we can docker rm -f c3
+
+is it possible to create multiple containers through commands no may be in docker swarm/compose
 
 is it possible to stop/start multiple containers -yes
+
 docker stop/start c1 c2 c3
 docker stop $(docker ps)  --> stop all running containers
-docker 
+
+with out using prune command can we delete all stopped containers?
+docker rm $(docker ps -aq -f/--filter status=exited)
+
 
 can we delete 100 containers?yes
 docker rm $(docker ps -a)  --> remove all stopped and started containers
