@@ -27,6 +27,9 @@ ADD		: to copy internet files to conatiner
 
 WORKDIR		: to open req directory
 
+container lo default ga / directory lo veltam 
+Workdir use chesi oka directory crate chesi dani lopala velachu( create dir + cd)
+
 ENV		: to set env variables (inside container)
 ARGS		: to pass env variables (outside containers)
 
