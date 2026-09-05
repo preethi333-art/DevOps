@@ -49,6 +49,22 @@ ENV		: to set env variables (inside container)
 ARGS		: to pass env variables (outside containers)
 
 
+DIFFERENCE BETWEEN CMD AND ENTRYPOINT
+ex:
+CMD ["yum" "install" "git" "-y"]
+
+wile running  docker run image maven --> it will over ride  and install maven
+
+ENTRYPOINT ["yum" "install" "git" "-y"]
+wile running  docker run image maven --> it will append  and install maven and git
+
+real world example
+npm start
+npm run dev 
+above are the 2 ways to start a node application
+ENTRYPOINT ["npm"] --> fixed
+CMD ["start"] --> overrride
+ docker run flm run dev  --> override start when running
 
 
 # Build stage
