@@ -1,3 +1,15 @@
+DOCKERFILE:
+It is a set of instructions
+It helps to create application to my image
+it is an automation way to create image.
+here we use components to create image.
+in Dockerfile D must be Capiatl.
+Components also capital.
+here we can create image directly without container help.
+
+
+
+
 # Build stage
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /app
