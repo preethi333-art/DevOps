@@ -1,0 +1,364 @@
+
+ Usually, **developers do not push the Dockerfile after every code change manually**. 
+The Dockerfile is normally created once and stored in the same GitHub repository. 
+When developers push new code, a CI/CD pipeline automatically builds a new Docker image.
+
+ Let's take a real example.
+
+ ## Real-time example: Java application
+
+ Suppose a developer creates a Java application:
+
+```
+my-java-app/
+│
+├── src/
+├── pom.xml
+└── README.md
+```
+
+ The developer pushes it to GitHub:
+
+```
+GitHub
+└── my-java-app
+```
+
+ ### Step 1: Developer writes code
+
+```
+Developer
+    ↓
+Java code
+    ↓
+GitHub
+```
+
+---
+
+ ## Step 2: DevOps engineer creates a Dockerfile
+
+ You clone the repository:
+
+```
+git clone <github-repository>
+```
+
+ Then create:
+
+```
+my-java-app/
+│
+├── src/
+├── pom.xml
+├── Dockerfile       ← DevOps adds this
+└── README.md
+```
+
+ For example:
+
+```
+FROM eclipse-temurin:17
+
+WORKDIR /app
+
+COPY target/app.jar app.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "app.jar"]
+```
+
+ Then you commit the Dockerfile:
+
+```
+git add Dockerfile
+git commit -m "Add Dockerfile"
+git push
+```
+
+ Now GitHub contains both:
+
+```
+Application code
+       +
+Dockerfile
+```
+
+---
+
+ # Step 3: Build the Docker image
+
+ You can build it using:
+
+```
+docker build -t my-java-app:v1 .
+```
+
+ Docker reads the Dockerfile and creates an **image**.
+
+```
+GitHub Repository
+       │
+       │
+       ├── Java Code
+       ├── pom.xml
+       └── Dockerfile
+              │
+              ↓
+        docker build
+              │
+              ↓
+       Docker Image
+       my-java-app:v1
+```
+
+---
+
+ # Step 4: Push the image to a registry
+
+ For example, you can push the image to Docker Hub or another container registry.
+
+```
+GitHub
+   │
+   │ source code
+   ↓
+CI/CD Pipeline
+   │
+   │ docker build
+   ↓
+Docker Image
+   │
+   │ docker push
+   ↓
+Container Registry
+```
+
+---
+
+ # Step 5: Deploy the same image everywhere
+
+ This is the **big advantage of containers**.
+
+ You can take the same image and run it in:
+
+```
+Development
+      ↓
+Testing
+      ↓
+Staging
+      ↓
+Production
+```
+
+ For example:
+
+```
+my-java-app:v1
+       │
+       ├── DEV
+       ├── TEST
+       ├── UAT
+       └── PROD
+```
+
+ The application itself is packaged inside the image along with its required runtime/dependencies.
+
+ So you avoid situations like:
+
+ > "It works on my laptop but doesn't work in production."
+
+---
+
+ # But there is an important point
+
+ You said:
+
+ > "We clone the GitHub code and then write our own Dockerfile."
+
+ That's **sometimes true**, especially when you're initially containerizing an existing application.
+
+ But in a real DevOps environment, the Dockerfile is generally **part of the application's source code repository**.
+
+ For example:
+
+```
+GitHub Repository
+│
+├── src/
+├── pom.xml
+├── Dockerfile
+├── .dockerignore
+└── README.md
+```
+
+ The Dockerfile is version-controlled along with the application.
+
+---
+
+ # What happens when the developer changes code?
+
+ Suppose the developer changes:
+
+```
+Login.java
+```
+
+ and pushes:
+
+```
+git push
+```
+
+ A CI/CD pipeline can automatically do:
+
+```
+Developer
+    ↓
+git push
+    ↓
+GitHub
+    ↓
+CI/CD
+    ↓
+Build application
+    ↓
+docker build
+    ↓
+New Docker Image
+    ↓
+docker push
+    ↓
+Container Registry
+    ↓
+Deploy
+```
+
+ For example:
+
+```
+v1 → old application
+v2 → new application
+```
+
+ Then production can run:
+
+```
+my-java-app:v2
+```
+
+---
+
+ # What about Python?
+
+ Exactly the same concept.
+
+ Python repository:
+
+```
+my-python-app/
+│
+├── app.py
+├── requirements.txt
+├── Dockerfile
+└── README.md
+```
+
+ Dockerfile:
+
+```
+FROM python:3.12
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
+```
+
+ Build:
+
+```
+docker build -t my-python-app:v1 .
+```
+
+ Now you have:
+
+```
+Python Code
+     +
+Python Runtime
+     +
+Dependencies
+     ↓
+Docker Image
+```
+
+---
+
+ # The key concept you should remember
+
+ Don't think:
+
+```
+Developer pushes code
+        ↓
+DevOps manually clones
+        ↓
+DevOps manually writes Dockerfile
+        ↓
+DevOps manually builds image
+        ↓
+DevOps manually deploys
+```
+
+ That's more of a **manual/lab process**.
+
+ In a real CI/CD setup, it's usually:
+
+```
+Developer
+    ↓
+Push code to GitHub
+    ↓
+CI/CD Pipeline
+    ↓
+Build & Test
+    ↓
+Docker Build
+    ↓
+Docker Image
+    ↓
+Container Registry
+    ↓
+Deploy to Environment
+```
+
+ And the **same immutable image** can be promoted through:
+
+```
+        Docker Image
+             │
+             ↓
+           DEV
+             │
+             ↓
+           TEST
+             │
+             ↓
+          STAGING
+             │
+             ↓
+           PROD
+```
+
+ That's one of the central ideas behind **containerization and CI/CD**:
+
+ > **Build once, test once, and promote the same image across environments**, rather than rebuilding the application differently for each environment.
