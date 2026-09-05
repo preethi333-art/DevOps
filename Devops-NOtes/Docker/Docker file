@@ -11,19 +11,34 @@ COMPONENTS:
 
 base image means want to install python for python application
 
-FROM		: used to define base image
+FROM		: used to define base ( mandatory first component)
 
 EXPOSE		: to give port number( used to define the container port)
 MAINTAINER :  it is used to add author details
 LABEL		: to add labels/description for docker file
 EXPOSE, MAINTAINER, LABEL --> used to only define just to know others not mandatory
 
-RUN		: used to run linux commands (image creation)
-CMD		: used to run linux commands (container creation)
+RUN		: used to run linux commands (image creation), execute command while creating image
+CMD		: used to run linux commands (container creation) execute command after  creating container
+ex RUN touch devops
+CMD touch preethi
+
+we can use multiple RUN but we cant use multiple CMD,
+eventhough we use multiple CMD it wll  execute only last CMD and skip other 
+
+dockerfile ---build-->  image (devops)---RUN--> container(preethi)
+in real time 
+npm build
+npm test
+above 2 used in image
+npm start in container
+
+
+
 ENTRYPOINT	: high priority than cmd
 
 COPY		: to copy local files(host) to conatiner
-ADD		: to copy internet files to conatiner
+ADD		: to copy local files(host) to conatiner and also  to copy internet files to conatiner
 
 WORKDIR		: to open req directory
 
