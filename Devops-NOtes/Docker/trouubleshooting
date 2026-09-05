@@ -1,3 +1,12 @@
 1. what will you do if container gets exited
 1. docker loggs contq
 1
+
+
+docker run -itd
+
+it means interactive terminal whih means inside the contaainer we interact using terminal, 
+without terminal we cant interact with containet
+
+can we create images with sqame name - yes
+existing image overrides and go to none state which means dangling imagegs
