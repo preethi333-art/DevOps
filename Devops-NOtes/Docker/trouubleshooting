@@ -10,3 +10,6 @@ without terminal we cant interact with containet
 
 can we create images with sqame name - yes
 existing image overrides and go to none state which means dangling imagegs
+
+
+czn we edit already created containers?
