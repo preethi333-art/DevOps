@@ -8,7 +8,7 @@ Components also capital.
 here we can create image directly without container help.
 
 COMPONENTS:
-
+===================================================================================================
 base image means want to install python for python application
 
 FROM		: used to define base ( mandatory first component)
@@ -17,7 +17,7 @@ EXPOSE		: to give port number( used to define the container port)
 MAINTAINER :  it is used to add author details
 LABEL		: to add labels/description for docker file
 EXPOSE, MAINTAINER, LABEL --> used to only define just to know others not mandatory
-
+===========================================================================================================
 RUN		: used to run linux commands (image creation), execute command while creating image
 CMD		: used to run linux commands (container creation) execute command after  creating container
 ex RUN touch devops
@@ -33,21 +33,10 @@ npm test
 above 2 used in image
 npm start in container
 
-
-
 ENTRYPOINT	: high priority than cmd
 
 COPY		: to copy local files(host) to conatiner
 ADD		: to copy local files(host) to conatiner and also  to copy internet files to conatiner
-
-WORKDIR		: to open req directory
-
-container lo default ga / directory lo veltam 
-Workdir use chesi oka directory crate chesi dani lopala velachu( create dir + cd)
-
-ENV		: to set env variables (inside container)
-ARGS		: to pass env variables (outside containers)
-
 
 DIFFERENCE BETWEEN CMD AND ENTRYPOINT
 ex:
@@ -65,6 +54,64 @@ above are the 2 ways to start a node application
 ENTRYPOINT ["npm"] --> fixed
 CMD ["start"] --> overrride
  docker run flm run dev  --> override start when running
+
+=================================================================================
+
+WORKDIR		: to open req directory
+
+container lo default ga / directory lo veltam 
+Workdir use chesi oka directory crate chesi dani lopala velachu( create dir + cd)
+========================================================================================
+ENV → available inside the container at runtime, and can be overridden at runtime.
+ARG → mainly available during image build, not automatically available inside the running container,
+and can be overridden during build.
+docker build -t image . --build-arg="name=devops"
+
+ARG → helps build the image.
+
+ENV → helps configure the running container.
+
+
+"Why do we use ARG if it is not available inside the container?"
+You can say:
+"ARG is used for build-time customization. For example, in a Java project,
+I can use an ARG to select Java 17 or Java 21 while building the image. Once the image is created,
+the application doesn't need that build argument. If I need a value inside the running container,
+such as the Spring Boot profile or database URL, I would use ENV or pass it at runtime using docker run -e."
+
+Remember this one line:
+ARG → helps build the image.
+
+ENV → helps configure the running container.
+
+Very common Docker use cases for ARG
+You use ARG for things like:
+
+Selecting a base image version
+Selecting Java/Python/Node versions
+Selecting application versions
+Passing build environment information
+Downloading a particular software version
+Controlling build steps
+For example:
+
+ARG NODE_VERSION=20
+
+FROM node:${NODE_VERSION}
+
+ARG APP_VERSION=1.0
+
+RUN echo "Building application version $APP_VERSION"
+
+Build:
+
+docker build \
+  --build-arg NODE_VERSION=22 \
+  --build-arg APP_VERSION=2.0 \
+  -t myapp:2.0 .
+
+================================================================================================================
+
 
 
 # Build stage
