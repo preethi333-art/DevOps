@@ -140,10 +140,33 @@ COPY app.jar .
 # Run the application
 CMD ["java", "-jar", "app.jar"]
 
+====================================================================
+when ever we want to deploy in httpd
+we need to place index.html in /var/www/html --> then our code runs and accesible in url
+nginx --> /user/share/nginx/html
 
+if you dont know the defaullt path go to doker hub there you can find the nginx official image --> instructions
+python dockerfile example
 
+1. dev gives requirement.txt(code run avvaniki kavalsina dependencies untai like pom.xml), app.py to us
+we need 
+1.python
+2.pip(package management tool) --> to install modules in python like yum in linux
+pip install -r requirements.txt -->dependencies install avtai
+3. python app.py --> running the application
 
+FROM python
+WORKDIR /myapp
+COPY . .
+RUN pip install -r requirements.txt
+CMD ["python", "app.py"]
 
+FROM node
+WORKDIR /app
+COPY package*.json .
+RUN npm install
+COPY . .
+CMD ["node", "node.js"]
 
 
 
